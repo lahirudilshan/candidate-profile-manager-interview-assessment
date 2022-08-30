@@ -1,15 +1,51 @@
 import { CheckOutlined, PlusOutlined } from '@ant-design/icons';
+import TitleBar from '@shared/components/TitleBar';
 import { Bordered } from '@shared/styles';
 import { Avatar, Button, Col, DatePicker, Form, Input, Modal, Result, Row, Select } from 'antd'
 import React, { useCallback, useState } from 'react'
 import styled from 'styled-components';
+import { TWorkExperience } from './work-experience/types/workExperience';
+import WorkExperienceList from './work-experience/WorkExperienceList';
 
 const WorkExperience: React.FC = () => {
     // state
     const [modal, setModal] = useState({
-        status: true,
+        status: false,
         data: null
     });
+    const [workExperiences, setWorkExperiences] = useState<TWorkExperience[]>([
+        {
+            jobTitle: 'Senior Software Engineer',
+            jobDescription: 'React, Angular, Node, Laravel experienced Engineer',
+            company: 'Orel IT',
+            companyLogo: '/static/images/company-logo/orel-it.jpeg',
+            startDate: '2016-07-26',
+            endDate: '2020-6-16'
+        },
+        {
+            jobTitle: 'Senior Software Engineer',
+            jobDescription: 'React, Angular, Node, Laravel experienced Engineer',
+            company: 'Orel IT',
+            companyLogo: '/static/images/company-logo/orel-it.jpeg',
+            startDate: '2016-07-26',
+            endDate: '2020-6-16'
+        },
+        {
+            jobTitle: 'Senior Software Engineer',
+            jobDescription: 'React, Angular, Node, Laravel experienced Engineer',
+            company: 'Orel IT',
+            companyLogo: '/static/images/company-logo/orel-it.jpeg',
+            startDate: '2016-07-26',
+            endDate: '2020-6-16'
+        }, {
+            jobTitle: 'Senior Software Engineer',
+            jobDescription: 'React, Angular, Node, Laravel experienced Engineer',
+            company: 'Orel IT',
+            companyLogo: '/static/images/company-logo/orel-it.jpeg',
+            startDate: '2016-07-26',
+            endDate: '2020-6-16'
+        }
+    ]);
 
     const handleModal = useCallback(({ status, data }: TModalParams) => {
         setModal({
@@ -24,7 +60,7 @@ const WorkExperience: React.FC = () => {
 
     return (
         <WorkExperienceContainer>
-            <Bordered>
+            {/* <Bordered>
                 <Result
                     title="Work Experience not found!"
                     extra={
@@ -33,8 +69,13 @@ const WorkExperience: React.FC = () => {
                         </Button>
                     }
                 />
-            </Bordered>
+            </Bordered> */}
 
+            <TitleBar title="Work Experiences" action={
+                <Button icon={<PlusOutlined />} onClick={() => handleModal({ status: true })} />
+            } />
+
+            <WorkExperienceList data={workExperiences} />
 
             <Modal
                 title="Add Work Experience"
@@ -56,7 +97,7 @@ const WorkExperience: React.FC = () => {
                     onFinish={() => { }}
                     onFinishFailed={() => { }}
                 >
-                    <Row gutter={[24, 24]}>
+                    <Row gutter={[24, 0]}>
                         <Col lg={24}>
                             <Form.Item
                                 label="Job Title"
