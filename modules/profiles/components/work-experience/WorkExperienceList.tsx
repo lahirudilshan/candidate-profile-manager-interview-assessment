@@ -1,7 +1,7 @@
 import { Avatar, Button, List, Typography } from 'antd'
 import React from 'react'
 import VirtualList from 'rc-virtual-list';
-import { TWorkExperience } from './types/workExperience';
+import { TWorkExperience } from '../../types/workExperience';
 import { ExpandOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 
@@ -30,7 +30,7 @@ const WorkExperienceList = ({ data }: TWorkExperienceListProps) => {
                                     </>
                                 }
                             />
-                            <Button type='primary' icon={<ExpandOutlined />}>Edit</Button>
+                            <Button icon={<ExpandOutlined />}>Edit</Button>
                         </List.Item>
                     )}
                 </VirtualList>

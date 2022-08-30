@@ -4,10 +4,10 @@ import { Bordered } from '@shared/styles';
 import { Avatar, Button, Col, DatePicker, Form, Input, Modal, Result, Row, Select } from 'antd'
 import React, { useCallback, useState } from 'react'
 import styled from 'styled-components';
-import { TWorkExperience } from './work-experience/types/workExperience';
-import WorkExperienceList from './work-experience/WorkExperienceList';
+import { TWorkExperience } from '../types/workExperience';
+import WorkExperienceList from '../components/work-experience/WorkExperienceList';
 
-const WorkExperience: React.FC = () => {
+const Profile: React.FC = () => {
     // state
     const [modal, setModal] = useState({
         status: false,
@@ -59,7 +59,7 @@ const WorkExperience: React.FC = () => {
     }
 
     return (
-        <WorkExperienceContainer>
+        <ProfileContainer>
             {/* <Bordered>
                 <Result
                     title="Work Experience not found!"
@@ -152,11 +152,11 @@ const WorkExperience: React.FC = () => {
                     </Row>
                 </Form>
             </Modal>
-        </WorkExperienceContainer>
+        </ProfileContainer>
     )
 }
 
-const WorkExperienceContainer = styled.div`
+const ProfileContainer = styled.div`
     .ant-select, .ant-picker {
         width: 100% !important;
     }
@@ -168,4 +168,4 @@ type TModalParams = {
     data?: any;
 }
 
-export default WorkExperience
+export default Profile

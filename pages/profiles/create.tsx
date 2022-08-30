@@ -7,7 +7,7 @@ import { Button, Col, Row, Switch } from 'antd';
 import dynamic from 'next/dynamic';
 import React from 'react';
 
-const DynamicWorkExperience = dynamic(() => import('@modules/profiles/components/WorkExperience'), {
+const DynamicWorkExperience = dynamic(() => import('@modules/profiles/screen/Profile'), {
     ssr: false,
 })
 

@@ -1,25 +1,34 @@
 import { Layout, Menu } from 'antd';
 import React from 'react'
 import styled from 'styled-components';
-import { PoweroffOutlined, UsergroupAddOutlined } from '@ant-design/icons'
+import { PoweroffOutlined, SettingOutlined, UsergroupAddOutlined } from '@ant-design/icons'
+import { useRouter } from 'next/router';
 
 const Header = () => {
     const { Header } = Layout;
+    const router = useRouter()
 
     return (
         <Container>
             <Header className="header" >
-                <div className="logo">CPM</div>
+                <div className="logo"><strong>Top100</strong>&nbsp;Candidates</div>
                 <Menu theme="dark" mode="horizontal" className='right-menu' items={[
                     {
                         key: 'candidates',
                         icon: <UsergroupAddOutlined />,
                         label: 'Candidates',
+                        onClick: () => router.push('/candidates')
                     },
                     {
                         key: 'settings',
                         label: 'Lahiru Dilshan',
                         children: [
+                            {
+                                key: 'Settings',
+                                label: 'Settings',
+                                icon: <SettingOutlined />,
+                                onClick: () => router.push('/profiles/create')
+                            },
                             {
                                 key: 'sign-out',
                                 label: 'Sign out',
