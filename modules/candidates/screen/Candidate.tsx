@@ -109,6 +109,7 @@ const WorkExperienceListContainer = styled.div`
         display: flex;
         justify-content: flex-start;
         align-items: flex-start;
+        padding: 22px 0;
     }
     .company-logo {
         width: 30px;

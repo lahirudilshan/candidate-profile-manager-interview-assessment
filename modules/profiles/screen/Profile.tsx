@@ -1,18 +1,35 @@
 import { CheckOutlined, PlusOutlined } from '@ant-design/icons';
 import TitleBar from '@shared/components/TitleBar';
-import { Bordered } from '@shared/styles';
-import { Avatar, Button, Col, DatePicker, Form, Input, Modal, Result, Row, Select } from 'antd'
+import { Flex, Space } from '@shared/styles';
+import { Avatar, Button, Col, DatePicker, Form, Input, Modal, Row, Select } from 'antd'
 import React, { useCallback, useState } from 'react'
 import styled from 'styled-components';
 import { TWorkExperience } from '../types/workExperience';
 import WorkExperienceList from '../components/work-experience/WorkExperienceList';
 
 const Profile: React.FC = () => {
+    // variables 
+    const companies = [
+        {
+            name: 'Orel IT',
+            logo: '/static/images/company-logo/orel-it.jpeg'
+        },
+        {
+            name: 'Noon',
+            logo: '/static/images/company-logo/noon.png'
+        },
+        {
+            name: 'Glints',
+            logo: '/static/images/company-logo/glints.png'
+        }
+    ];
+
     // state
     const [modal, setModal] = useState({
         status: false,
         data: null
     });
+
     const [workExperiences, setWorkExperiences] = useState<TWorkExperience[]>([
         {
             jobTitle: 'Senior Software Engineer',
@@ -119,23 +136,15 @@ const Profile: React.FC = () => {
                         <Col lg={8}>
                             <Form.Item name="company" label="Company">
                                 <Select showSearch>
-                                    <Select.Option key={'test'}>
-                                        <div style={{
-                                            display: 'flex',
-                                            alignItems: 'center'
-                                        }}>
+                                    {companies.length > 0 && companies.map((company) => <Select.Option key={company.name}>
+                                        <Flex alignItems={'center'}>
                                             <Avatar
-                                                src={'/static/images/company-logo/orel-it.jpeg'}
-                                                style={{
-                                                    color: '#999',
-                                                    backgroundColor: '#fff'
-                                                }}
-                                                icon='shop'
+                                                src={company.logo}
                                                 size='small'
                                             />
-                                            <span style={{ marginLeft: 8 }}>Orel IT</span>
-                                        </div>
-                                    </Select.Option>
+                                            <Space left={1}>{company.name}</Space>
+                                        </Flex>
+                                    </Select.Option>)}
                                 </Select>
                             </Form.Item>
                         </Col>
