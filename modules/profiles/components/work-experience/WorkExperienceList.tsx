@@ -5,7 +5,7 @@ import { TWorkExperience } from '../../types/workExperience';
 import { ExpandOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 
-const WorkExperienceList = ({ data }: TWorkExperienceListProps) => {
+const WorkExperienceList = ({ data, mode = 'edit' }: TWorkExperienceListProps) => {
     return (
         <WorkExperienceListContainer>
             <List>
@@ -30,7 +30,7 @@ const WorkExperienceList = ({ data }: TWorkExperienceListProps) => {
                                     </>
                                 }
                             />
-                            <Button icon={<ExpandOutlined />}>Edit</Button>
+                            {mode === 'edit' && <Button icon={<ExpandOutlined />}>Edit</Button>}
                         </List.Item>
                     )}
                 </VirtualList>
@@ -59,6 +59,7 @@ const WorkExperienceListContainer = styled.div`
 // types
 type TWorkExperienceListProps = {
     data: TWorkExperience[];
+    mode?: 'view' | 'edit';
 }
 
 export default WorkExperienceList

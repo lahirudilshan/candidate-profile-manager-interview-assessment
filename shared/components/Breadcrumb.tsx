@@ -10,12 +10,11 @@ const Breadcrumb = () => {
   // variables
   let breadcrumbs: JSX.Element[] | null = null;
 
-
   /**
    * get URL parts
    * @return string[]
    */
-  const getURLSegment = useCallback(() => router.pathname?.split("/").filter(segment => segment.length > 0), [router.pathname])
+  const getURLSegment = useCallback(() => router.asPath?.split("/").filter(segment => segment.length > 0), [router.asPath])
 
   /**
    * handle breadcrumb navigation
@@ -35,9 +34,6 @@ const Breadcrumb = () => {
       return <AntdBreadcrumb.Item key={url} onClick={() => handleBreadcrumbNavigation(url)}>{segment}</AntdBreadcrumb.Item>
     });
   }
-
-  console.log('breadcrumbs render');
-
 
   return (
     <BreadcrumbContainer>

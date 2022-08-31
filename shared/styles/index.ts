@@ -87,10 +87,12 @@ const PageContainer = styled.div`
     overflow-y: auto;
 `;
 
-const CustomDivider = styled(Divider) <{ margin?: number }>`
-    height: 100%;
-    .ant-divider-horizontal {
-        ${props => props.margin && `margin: ${props.margin}rem 0 !important;`};
+const CustomDivider = styled(Divider) <{ margin?: number; }>`
+    ${props => props.type === 'vertical' && `height: 100%;`}
+    ${props => props.type === 'horizontal' && `
+        .ant-divider-horizontal {
+            ${props.margin && `margin: ${props.margin}rem 0 !important;`};
+        }`
     }
 `;
 
@@ -101,6 +103,18 @@ const Title = styled(Typography.Title)`
 const Bordered = styled.div<{ padding?: string; }>`
     ${props => props.padding && `padding: ${props.padding};`}
     border: 1px solid #eee;
+`;
+
+const Cursor = styled.div<{ type?: string }>`
+    cursor: ${props => props.type || 'pointer'};
+    .ant-list-item {
+        padding: 20px !important;
+        margin: 10px 0;
+    }
+    .ant-list-item:hover {
+        border-radius: 8px;
+        background-color: #ecf0f1;
+    }
 `;
 
 export {
@@ -115,5 +129,6 @@ export {
     SameHeightCol,
     CustomDivider,
     Title,
-    Bordered
+    Bordered,
+    Cursor
 };

@@ -3,9 +3,13 @@ import React, { useState } from 'react'
 import styled from 'styled-components';
 import { TCandidate } from '../types/candidate';
 import VirtualList from 'rc-virtual-list';
-import { Flex } from '@shared/styles';
+import { Cursor, Flex } from '@shared/styles';
+import { useRouter } from 'next/router';
 
 const Candidate: React.FC = () => {
+    // hooks
+    const router = useRouter();
+
     // state
     const [candidates, setCandidates] = useState<TCandidate[]>([
         {
@@ -54,6 +58,10 @@ const Candidate: React.FC = () => {
         },
     ]);
 
+    const handleProfileView = () => {
+        router.push('/profiles/lahirudilshan');
+    }
+
     return (
         <WorkExperienceListContainer>
             <List>
@@ -64,25 +72,27 @@ const Candidate: React.FC = () => {
                     onScroll={() => { }}
                 >
                     {(candidate: TCandidate) => (
-                        <List.Item key={candidate.fullName}>
-                            <List.Item.Meta
-                                avatar={<Avatar src={candidate.profilePicture} />}
-                                title={
-                                    <Typography.Title level={4}>{candidate.jobTitle}</Typography.Title>
-                                }
-                                description={
-                                    <>
-                                        <Typography.Title level={5} type='secondary'>{candidate.jobDescription}</Typography.Title>
-                                        <Typography.Title level={5} type='secondary'>
-                                            <Image src={candidate.companyLogo} className="company-logo" />
-                                            {candidate.company}
-                                        </Typography.Title>
-                                        <Typography.Text type='secondary'>{candidate.startDate} - {candidate.startDate ? candidate.startDate : 'Present'}</Typography.Text>
-                                    </>
-                                }
-                            />
-                            <Flex justifyContent={'flex-start'}>{candidate.age} Years old</Flex>
-                        </List.Item>
+                        <Cursor>
+                            <List.Item key={candidate.fullName} onClick={handleProfileView}>
+                                <List.Item.Meta
+                                    avatar={<Avatar src={candidate.profilePicture} />}
+                                    title={
+                                        <Typography.Title level={4}>{candidate.jobTitle}</Typography.Title>
+                                    }
+                                    description={
+                                        <>
+                                            <Typography.Title level={5} type='secondary'>{candidate.jobDescription}</Typography.Title>
+                                            <Typography.Title level={5} type='secondary'>
+                                                <Image src={candidate.companyLogo} className="company-logo" />
+                                                {candidate.company}
+                                            </Typography.Title>
+                                            <Typography.Text type='secondary'>{candidate.startDate} - {candidate.startDate ? candidate.startDate : 'Present'}</Typography.Text>
+                                        </>
+                                    }
+                                />
+                                <Flex justifyContent={'flex-start'}>{candidate.age} Years old</Flex>
+                            </List.Item>
+                        </Cursor>
                     )}
                 </VirtualList>
             </List>
