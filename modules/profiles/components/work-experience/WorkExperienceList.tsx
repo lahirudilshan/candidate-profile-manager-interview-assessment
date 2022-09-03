@@ -1,9 +1,9 @@
 import { Avatar, Button, List, Typography } from 'antd'
 import React from 'react'
 import VirtualList from 'rc-virtual-list';
-import { TWorkExperience } from '../../types/workExperience';
 import { ExpandOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
+import { TWorkExperience } from '@modules/profiles/types/work-experience/entity';
 
 const WorkExperienceList = ({ data, mode = 'edit' }: TWorkExperienceListProps) => {
     return (
@@ -18,14 +18,14 @@ const WorkExperienceList = ({ data, mode = 'edit' }: TWorkExperienceListProps) =
                     {(item: TWorkExperience) => (
                         <List.Item key={item.jobTitle}>
                             <List.Item.Meta
-                                avatar={<Avatar src={item.companyLogo} />}
+                                avatar={<Avatar src={item?.company?.logo} />}
                                 title={
-                                    <Typography.Title level={4}>{item.jobTitle}</Typography.Title>
+                                    <div><Typography.Title level={4}>{item.jobTitle}</Typography.Title></div>
                                 }
                                 description={
                                     <>
                                         <Typography.Title level={5} type='secondary'>{item.jobDescription}</Typography.Title>
-                                        <Typography.Title level={5} type='secondary'>{item.company}</Typography.Title>
+                                        <Typography.Title level={5} type='secondary'>{item?.company?.name}</Typography.Title>
                                         <Typography.Text type='secondary'>{item.startDate} - {item.startDate ? item.startDate : 'Present'}</Typography.Text>
                                     </>
                                 }

@@ -1,11 +1,15 @@
 import { Header, Breadcrumb } from '@shared/components';
+import { Space } from '@shared/styles';
 import { Layout } from 'antd';
+import { useRouter } from 'next/router';
 import React from 'react';
 import styled from 'styled-components';
 
 const { Content } = Layout;
 
 const PageLayout: React.FC<TProps> = ({ children }: TProps) => {
+  const router = useRouter();
+  const breadcrumbShouldNotInclude = ['/'];
 
   return (
     <Container>
@@ -13,7 +17,7 @@ const PageLayout: React.FC<TProps> = ({ children }: TProps) => {
         <Header />
         <Layout>
           <Layout className='main-layout'>
-            <Breadcrumb />
+            {!breadcrumbShouldNotInclude.includes(router.asPath) ? <Breadcrumb /> : (<Space top={1.5} />)}
             <Content className="content">
               {children}
             </Content>

@@ -100,8 +100,9 @@ const Title = styled(Typography.Title)`
     font-weight: 300 !important;
 `;
 
-const Bordered = styled.div<{ padding?: string; }>`
+const Bordered = styled.div<{ padding?: string; radius?: string }>`
     ${props => props.padding && `padding: ${props.padding};`}
+    ${props => props.radius && `border-radius: ${props.radius};`}
     border: 1px solid #eee;
 `;
 

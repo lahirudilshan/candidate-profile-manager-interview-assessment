@@ -1,13 +1,13 @@
 import { CheckOutlined, PlusOutlined } from '@ant-design/icons';
 import TitleBar from '@shared/components/TitleBar';
-import { Flex, Space } from '@shared/styles';
-import { Avatar, Button, Col, DatePicker, Form, Input, Modal, Row, Select } from 'antd'
+import { Bordered, Flex, Space } from '@shared/styles';
+import { Avatar, Button, Col, DatePicker, Form, Input, Modal, Result, Row, Select } from 'antd'
 import React, { useCallback, useState } from 'react'
 import styled from 'styled-components';
-import { TWorkExperience } from '../types/workExperience';
-import WorkExperienceList from '../components/work-experience/WorkExperienceList';
+import WorkExperienceList from '@modules/profiles/components/work-experience/WorkExperienceList';
+import { TWorkExperience } from '@modules/profiles/types/work-experience/entity';
 
-const Profile: React.FC = () => {
+const Profile: React.FC<TProfileProps> = ({ data }) => {
     // variables 
     const companies = [
         {
@@ -30,40 +30,6 @@ const Profile: React.FC = () => {
         data: null
     });
 
-    const [workExperiences, setWorkExperiences] = useState<TWorkExperience[]>([
-        {
-            jobTitle: 'Senior Software Engineer',
-            jobDescription: 'React, Angular, Node, Laravel experienced Engineer',
-            company: 'Orel IT',
-            companyLogo: '/static/images/company-logo/orel-it.jpeg',
-            startDate: '2016-07-26',
-            endDate: '2020-6-16'
-        },
-        {
-            jobTitle: 'Senior Software Engineer',
-            jobDescription: 'React, Angular, Node, Laravel experienced Engineer',
-            company: 'Orel IT',
-            companyLogo: '/static/images/company-logo/orel-it.jpeg',
-            startDate: '2016-07-26',
-            endDate: '2020-6-16'
-        },
-        {
-            jobTitle: 'Senior Software Engineer',
-            jobDescription: 'React, Angular, Node, Laravel experienced Engineer',
-            company: 'Orel IT',
-            companyLogo: '/static/images/company-logo/orel-it.jpeg',
-            startDate: '2016-07-26',
-            endDate: '2020-6-16'
-        }, {
-            jobTitle: 'Senior Software Engineer',
-            jobDescription: 'React, Angular, Node, Laravel experienced Engineer',
-            company: 'Orel IT',
-            companyLogo: '/static/images/company-logo/orel-it.jpeg',
-            startDate: '2016-07-26',
-            endDate: '2020-6-16'
-        }
-    ]);
-
     const handleModal = useCallback(({ status, data }: TModalParams) => {
         setModal({
             status,
@@ -77,7 +43,13 @@ const Profile: React.FC = () => {
 
     return (
         <ProfileContainer>
-            {/* <Bordered>
+            <TitleBar title="Work Experiences" action={
+                <Button icon={<PlusOutlined />} onClick={() => handleModal({ status: true })} />
+            } />
+
+            {data && data.length > 0 ? (
+                <WorkExperienceList data={data} />
+            ) : (<Bordered>
                 <Result
                     title="Work Experience not found!"
                     extra={
@@ -86,13 +58,7 @@ const Profile: React.FC = () => {
                         </Button>
                     }
                 />
-            </Bordered> */}
-
-            <TitleBar title="Work Experiences" action={
-                <Button icon={<PlusOutlined />} onClick={() => handleModal({ status: true })} />
-            } />
-
-            <WorkExperienceList data={workExperiences} />
+            </Bordered >)}
 
             <Modal
                 title="Add Work Experience"
@@ -175,6 +141,10 @@ const ProfileContainer = styled.div`
 type TModalParams = {
     status: boolean;
     data?: any;
+}
+
+type TProfileProps = {
+    data: TWorkExperience[] | undefined
 }
 
 export default Profile

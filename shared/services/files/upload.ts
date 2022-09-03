@@ -1,13 +1,11 @@
 import axios, { AxiosRequestConfig } from 'axios';
-import { defaultAPIHeader } from '@shared/services';
 
-const uploadFile = async ({ config = defaultAPIHeader, payload }: TUploadFile) => {
+const uploadFile = async ({ file }: TUploadFile) => {
     try {
         // 👇️ const data: GetUsersResponse
         const { data, status } = await axios.post<TUploadFileResponse>(
-            'https://reqres.in/api/users',
-            payload,
-            config
+            '/api/auth/update',
+            file
         );
 
         console.log(status, data);
@@ -32,6 +30,5 @@ export type TUploadFileResponse = {
 };
 
 export type TUploadFile = {
-    config: AxiosRequestConfig;
-    payload: any
+    file: FormData;
 }

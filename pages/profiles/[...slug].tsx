@@ -1,11 +1,10 @@
-import WorkExperienceList from '@modules/profiles/components/work-experience/WorkExperienceList'
-import { TWorkExperience } from '@modules/profiles/types/workExperience'
-import { PageContent } from '@shared/components'
-import { CustomDivider, Flex, Space } from '@shared/styles'
-import { Col, Divider, Image, Row, Typography } from 'antd'
-import dynamic from 'next/dynamic'
-import React, { useState } from 'react'
-import styled from 'styled-components'
+import { TWorkExperience } from '@modules/profiles/types/work-experience/component';
+import { PageContent } from '@shared/components';
+import { CustomDivider, Flex, Space } from '@shared/styles';
+import { Col, Image, Row, Typography } from 'antd';
+import dynamic from 'next/dynamic';
+import React, { useState } from 'react';
+import styled from 'styled-components';
 
 // dynamic imports
 const DynamicWorkExperience = dynamic(() => import('@modules/profiles/components/work-experience/WorkExperienceList'), {

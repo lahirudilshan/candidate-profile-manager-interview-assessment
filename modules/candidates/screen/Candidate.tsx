@@ -66,6 +66,7 @@ const Candidate: React.FC = () => {
         <WorkExperienceListContainer>
             <List>
                 <VirtualList
+                    key={'list'}
                     data={candidates}
                     itemHeight={47}
                     itemKey="candidates"
@@ -77,7 +78,7 @@ const Candidate: React.FC = () => {
                                 <List.Item.Meta
                                     avatar={<Avatar src={candidate.profilePicture} />}
                                     title={
-                                        <Typography.Title level={4}>{candidate.jobTitle}</Typography.Title>
+                                        <div><Typography.Title level={4}>{candidate.jobTitle}</Typography.Title></div>
                                     }
                                     description={
                                         <>
