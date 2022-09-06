@@ -1,11 +1,19 @@
 import { Bordered, Position } from '@shared/styles';
 import { Image } from 'antd';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import FileUploader from '@shared/components/FileUploader';
+import { defaultUserProfile } from '@shared/utils';
 
 const ProfilePicture = ({ src }: TProfilePictureProps) => {
+    // states
     const [profileURL, setProfileURL] = useState(src);
+
+    // effects
+    useEffect(() => {
+        setProfileURL(src);
+    }, [src])
+
 
     const handleOnFileRemove = () => {
 
@@ -22,7 +30,7 @@ const ProfilePicture = ({ src }: TProfilePictureProps) => {
         <ProfileContainer>
             <Position type='relative'>
                 <Bordered radius={'8px'}>
-                    <Image src={profileURL || '/static/images/default-user.jpeg'} alt="candidate image" />
+                    <Image src={profileURL || defaultUserProfile} preview={profileURL ? true : false} alt="candidate image" />
                 </Bordered>
                 <FileUploader onRemove={handleOnFileRemove} onPreviewURlChange={handlePreviewURL} />
             </Position>
@@ -30,7 +38,7 @@ const ProfilePicture = ({ src }: TProfilePictureProps) => {
     )
 }
 
-// style
+// styles
 const ProfileContainer = styled.div`
     img {
         width: 254px;

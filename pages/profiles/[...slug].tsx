@@ -1,68 +1,87 @@
-import { TWorkExperience } from '@modules/profiles/types/work-experience/component';
+import { TCandidate } from '@modules/profiles/types/entity';
 import { PageContent } from '@shared/components';
 import { CustomDivider, Flex, Space } from '@shared/styles';
-import { Col, Image, Row, Typography } from 'antd';
+import { Button, Col, Image, Result, Row, Typography } from 'antd';
+import axios from 'axios';
 import dynamic from 'next/dynamic';
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
+import { useRouter } from 'next/router'
+import { TCommonResponse } from '@shared/types/service';
+import { defaultUserProfile, getLatestExperience } from '@shared/utils';
 
-// dynamic imports
-const DynamicWorkExperience = dynamic(() => import('@modules/profiles/components/work-experience/WorkExperienceList'), {
+export async function getServerSideProps(context: any) {
+  let candidate = null;
+
+  try {
+    const response = await axios.post<TCommonResponse<TCandidate>>(`${process.env.NEXT_PUBLIC_URL}/api/candidates/detail`, {
+      profileURL: context.params.slug[0]
+    });
+
+    candidate = response.data.data;
+  } catch (error) { }
+
+  return { props: { candidate } }
+}
+
+const DynamicWorkExperienceList = dynamic(() => import('@modules/profiles/components/work-experience/WorkExperienceList'), {
   ssr: false,
-})
+});
 
-const ProfileView = () => {
-  const [workExperiences, setWorkExperiences] = useState<TWorkExperience[]>([
-    {
-      jobTitle: 'Senior Software Engineer',
-      jobDescription: 'React, Angular, Node, Laravel experienced Engineer',
-      company: 'Orel IT',
-      companyLogo: '/static/images/company-logo/orel-it.jpeg',
-      startDate: '2016-07-26',
-      endDate: '2020-6-16'
-    },
-    {
-      jobTitle: 'Senior Software Engineer',
-      jobDescription: 'React, Angular, Node, Laravel experienced Engineer',
-      company: 'Orel IT',
-      companyLogo: '/static/images/company-logo/orel-it.jpeg',
-      startDate: '2016-07-26',
-      endDate: '2020-6-16'
-    },
-    {
-      jobTitle: 'Senior Software Engineer',
-      jobDescription: 'React, Angular, Node, Laravel experienced Engineer',
-      company: 'Orel IT',
-      companyLogo: '/static/images/company-logo/orel-it.jpeg',
-      startDate: '2016-07-26',
-      endDate: '2020-6-16'
-    }
-  ]);
+const ProfileView = ({ candidate }: TProfileViewProps) => {
+  // hooks
+  const router = useRouter();
 
   return (
     <ProfileViewContainer>
-      <PageContent >
-        <Row>
-          <Col lg={24}>
-            <Row gutter={[50, 50]}>
-              <Col lg={10}>
-                <Flex justifyContent={'center'} alignItems={'center'}>
-                  <Image src='/static/images/profile-pictures/lahiru-dilshan.jpg' className='profile-picture' />
-                </Flex>
-              </Col>
-              <Col lg={14}>
-                <Typography.Title level={1}>Lahiru Dilshan</Typography.Title>
-                <Typography.Title level={4} type="secondary">JavaScript Fullstack Engineer, Focused on Frontend, Skilled in React, NextJs, Angular, Node.js, and Laravel</Typography.Title>
-                <Space top={3} />
-                <Typography.Title level={4} type="secondary">Work Experience</Typography.Title>
-                <CustomDivider margin={0} />
-                <DynamicWorkExperience data={workExperiences} mode="view" />
+      {
+        candidate ?
+          <PageContent >
+            <Row>
+              <Col lg={24}>
+                <Row gutter={[50, 50]}>
+                  <Col lg={10}>
+                    <Flex justifyContent={'center'} alignItems={'center'}>
+                      <Image src={candidate.profilePicture || defaultUserProfile} className='profile-picture' />
+                    </Flex>
+                  </Col>
+                  <Col lg={14}>
+                    <Typography.Title level={1}>{candidate.name}</Typography.Title>
+                    <Typography.Title level={4} type="secondary"> {getLatestExperience(candidate)?.jobTitle || 'Unknown Job Title'}</Typography.Title>
+                    <Space top={3} />
+                    {candidate && candidate.workExperiences && candidate.workExperiences.length > 0 && (
+                      <>
+                        <Typography.Title level={4} type="secondary">Work Experience</Typography.Title>
+                        <CustomDivider margin={0} />
+                        <DynamicWorkExperienceList data={candidate.workExperiences} mode="view" />
+                      </>
+                    )}
+                  </Col>
+                </Row>
+
               </Col>
             </Row>
-          </Col>
-        </Row>
-      </PageContent>
-    </ProfileViewContainer>
+          </PageContent>
+          :
+          (
+            <>
+              <Space top={8} />
+              <Flex justifyContent={'center'} alignItems={'center'}>
+                <Result
+                  status="warning"
+                  title="Profile Not Found"
+                  subTitle="This Profile not found or not available for public"
+                  extra={
+                    <Button type="primary" key="home" onClick={() => router.push('/')}>
+                      Go Home
+                    </Button>
+                  }
+                />
+              </Flex>
+            </>
+          )
+      }
+    </ProfileViewContainer >
   )
 }
 
@@ -82,5 +101,10 @@ const ProfileViewContainer = styled.div`
     font-weight: 400;
   }
 `;
+
+// types
+type TProfileViewProps = {
+  candidate: TCandidate;
+}
 
 export default ProfileView

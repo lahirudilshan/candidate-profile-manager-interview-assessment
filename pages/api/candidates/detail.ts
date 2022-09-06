@@ -9,12 +9,14 @@ export default async (
 ) => {
     try {
         if (req.method !== 'POST') return res.status(405).json({ success: false, data: null, message: 'Method not allowed' });
-        if (req.body && !req.body.email) return res.status(400).json({ success: false, data: null, message: 'email param is required' });
 
-        const save = await prisma.candidate.findFirst({
-            where: {
-                email: req.body.email
-            },
+        let errors: Record<string, string>[] = [];
+
+        if (!req.body.profileURL) errors.push({ profileURL: 'profileURL is required' });
+
+        if (errors.length > 0) return res.status(400).json({ success: false, message: 'Missing required fields', data: errors })
+
+        const candidate = await prisma.candidate.findFirst({
             include: {
                 workExperiences: {
                     include: {
@@ -22,27 +24,34 @@ export default async (
                     },
                     orderBy: {
                         startDate: 'asc'
-                    }
-                }
+                    },
+                },
+            },
+            orderBy: {
+                createdAt: 'desc'
+            },
+            where: {
+                isPublic: true,
+                profileURL: req.body.profileURL
             }
         });
 
-        if (save) {
+        if (candidate) {
             return res.status(200).json({
                 success: true,
-                data: save,
-                message: 'User info successfully fetched!'
+                data: candidate,
+                message: 'Candidate fetched successfully!'
             });
         } else {
-            return res.status(200).json({
+            return res.status(500).json({
                 success: false,
                 data: [],
-                message: 'User not found'
+                message: 'Candidate not found'
             });
         }
-
-
     } catch (error: any) {
+        console.log(error);
+
         return res.status(400).json({
             success: false,
             data: error,

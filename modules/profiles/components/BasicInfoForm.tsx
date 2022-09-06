@@ -1,36 +1,95 @@
 import { Candidate } from '@prisma/client';
-import { Form, Input, Select, Switch } from 'antd'
-import React, { useEffect } from 'react'
+import { Form, FormInstance, Input, Select, Typography } from 'antd'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
+import { CheckOutlined, CloseOutlined, LoadingOutlined } from '@ant-design/icons';
+import axios from 'axios';
+import { TFetchCommonResponse } from '@shared/types/service';
+import { TLoader } from '@shared/types/component';
+import { stringToSlug } from '@shared/utils';
 
-const ProfileBasicInfoForm: React.FC<TProfileBasicInfoFormProps> = ({ data }: TProfileBasicInfoFormProps) => {
+const ProfileBasicInfoForm: React.FC<TProfileBasicInfoFormProps> = ({ form, data, disableSubmitButton }: TProfileBasicInfoFormProps) => {
+    // state
+    const [profileURL, setProfileURL] = useState<string | undefined>(undefined);
+    const [validURL, setValidURL] = useState<boolean>(true);
+    const [isLoading, setIsLoading] = useState<TLoader>({
+        content: false,
+        fullScreen: false
+    });
+
+    // refs
+    const searchRef = useRef<string | null>(null);
+    const searchDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
     // effects
     useEffect(() => {
+        data && setProfileURL(data.profileURL);
+
         form.setFieldsValue({
-            fullName: data && data.name || null,
-            email: data && data.email || null,
-            age: data && data.age || null
+            name: data && data.name || undefined,
+            email: data && data.email || undefined,
+            age: data && data.age || undefined,
+            profileURL: data && data.profileURL || undefined
         });
-    }, [data])
+    }, [data]);
+
+    useEffect(() => {
+        form.setFieldValue('profileURL', profileURL || undefined);
+    }, [profileURL])
 
 
-    // hooks
-    const [form] = Form.useForm();
+    /**
+     * check profile url availability
+     * @param event: ChangeEvent
+     * @return void
+     */
+    const checkProfileURLAvailability = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setIsLoading({
+            ...isLoading,
+            content: true
+        });
 
-    const handleSubmit = () => {
-        console.log(form.getFieldsValue());
+        searchRef.current = event.target.value;
+
+        searchDebounceRef.current && clearTimeout(searchDebounceRef.current);
+
+        const slugURL = stringToSlug(event.target.value);
+        setProfileURL(slugURL);
+
+        searchDebounceRef.current = setTimeout(() => {
+            slugURL && checkURLAvailability(slugURL);
+        }, 500);
     }
 
+    /**
+     * handle fetch companies
+     * @param requestedURL: string
+     * @return void
+     */
+    const checkURLAvailability = useCallback((requestedURL: string) => {
+        axios.post('/api/auth/check-public-url', {
+            profileURL: requestedURL
+        })
+            .then((response: TFetchCommonResponse<boolean>) => {
+                console.log(response.data.data);
+                setValidURL(response.data.data ? true : false);
+                disableSubmitButton(response.data.data ? false : true);
+            })
+            .catch((error) => {
+                setValidURL(false)
+            })
+            .finally(() => {
+                setIsLoading({
+                    ...isLoading,
+                    content: false
+                })
+            });
+    }, []);
+
     return (
-        <Form
-            form={form}
-            name="basic_info"
-            layout="vertical"
-            onFinish={() => handleSubmit()}
-            onFinishFailed={() => { }}
-        >
+        <>
             <Form.Item
                 label="Full name"
-                name="fullName"
+                name="name"
                 rules={[{ required: true, message: 'Please enter full name' }]}
             >
                 <Input />
@@ -41,7 +100,7 @@ const ProfileBasicInfoForm: React.FC<TProfileBasicInfoFormProps> = ({ data }: TP
                 name="email"
                 rules={[{ required: true, message: 'Please enter email' }]}
             >
-                <Input />
+                <Input disabled />
             </Form.Item>
 
             <Form.Item
@@ -57,13 +116,34 @@ const ProfileBasicInfoForm: React.FC<TProfileBasicInfoFormProps> = ({ data }: TP
                     {Array(91).fill(1).map((el, i) => <Select.Option key={i} value={i + 10}>{i + 10}</Select.Option>)}
                 </Select>
             </Form.Item>
-        </Form>
+            <Form.Item
+                label="username"
+                name="profileURL"
+                rules={[{ required: true, message: 'Please enter username' }]}
+                extra={
+                    <>
+                        top100.com/<strong>{profileURL}</strong>{' '}{isLoading.content ?
+                            <LoadingOutlined />
+                            :
+                            validURL ?
+                                <Typography.Text type='success'><CheckOutlined /></Typography.Text>
+                                :
+                                <Typography.Text type='danger'><CloseOutlined /></Typography.Text>
+                        }
+                    </>
+                }>
+                <Input onChange={checkProfileURLAvailability} autoComplete="off" />
+            </Form.Item>
+
+        </>
     )
 }
 
 // types
 type TProfileBasicInfoFormProps = {
     data: Candidate | undefined;
+    form: FormInstance<Partial<Candidate>>;
+    disableSubmitButton: (status: boolean) => void
 }
 
 export default ProfileBasicInfoForm

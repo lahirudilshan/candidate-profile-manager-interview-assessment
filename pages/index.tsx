@@ -1,8 +1,8 @@
-import { PageContent } from '@shared/components'
-import TitleBar from '@shared/components/TitleBar'
-import { Col, Row } from 'antd'
-import dynamic from 'next/dynamic'
-import React from 'react'
+import { PageContent } from '@shared/components';
+import { MinHeight } from '@shared/styles';
+import { Col, Row } from 'antd';
+import dynamic from 'next/dynamic';
+import React from 'react';
 
 const DynamicCandidate = dynamic(() => import('@modules/candidates/screen/Candidate'), {
   ssr: false,
@@ -10,13 +10,14 @@ const DynamicCandidate = dynamic(() => import('@modules/candidates/screen/Candid
 
 const Home = () => {
   return (
-    <PageContent >
-      <Row>
-        <Col lg={16} offset={4}>
-          <TitleBar title='Awesome Candidates' />
-          <DynamicCandidate />
-        </Col>
-      </Row>
+    <PageContent>
+      <MinHeight size={50}>
+        <Row>
+          <Col lg={16} offset={4}>
+            <DynamicCandidate />
+          </Col>
+        </Row>
+      </MinHeight>
     </PageContent>
   )
 }

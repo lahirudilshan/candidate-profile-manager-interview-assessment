@@ -6,6 +6,8 @@ CREATE TABLE "Candidate" (
     "email" TEXT NOT NULL,
     "age" INTEGER NOT NULL,
     "isPublic" BOOLEAN NOT NULL DEFAULT false,
+    "profileURL" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Candidate_pkey" PRIMARY KEY ("id")
 );
@@ -18,7 +20,8 @@ CREATE TABLE "WorkExperience" (
     "jobTitle" TEXT NOT NULL,
     "jobDescription" TEXT NOT NULL,
     "startDate" TEXT NOT NULL,
-    "endDate" TEXT NOT NULL,
+    "endDate" TEXT,
+    "createdAt" TIMESTAMP(3) DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "WorkExperience_pkey" PRIMARY KEY ("id")
 );
@@ -36,10 +39,13 @@ CREATE TABLE "Company" (
 CREATE UNIQUE INDEX "Candidate_email_key" ON "Candidate"("email");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "WorkExperience_companyId_key" ON "WorkExperience"("companyId");
+CREATE UNIQUE INDEX "Candidate_profileURL_key" ON "Candidate"("profileURL");
+
+-- CreateIndex
+CREATE INDEX "WorkExperience_companyId_idx" ON "WorkExperience"("companyId");
 
 -- AddForeignKey
 ALTER TABLE "WorkExperience" ADD CONSTRAINT "WorkExperience_candidateId_fkey" FOREIGN KEY ("candidateId") REFERENCES "Candidate"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Company" ADD CONSTRAINT "Company_id_fkey" FOREIGN KEY ("id") REFERENCES "WorkExperience"("companyId") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "WorkExperience" ADD CONSTRAINT "WorkExperience_companyId_fkey" FOREIGN KEY ("companyId") REFERENCES "Company"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

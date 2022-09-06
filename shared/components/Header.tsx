@@ -1,13 +1,14 @@
-import { Layout, Menu } from 'antd';
+import { Avatar, Image, Layout, Menu } from 'antd';
 import React from 'react'
 import styled from 'styled-components';
-import { PoweroffOutlined, SettingOutlined, UnlockOutlined, UsergroupAddOutlined } from '@ant-design/icons'
+import { PoweroffOutlined, SettingOutlined, UnlockOutlined, UsergroupAddOutlined, UserOutlined } from '@ant-design/icons'
 import { useRouter } from 'next/router';
 import { signIn, signOut } from 'next-auth/react';
 import { ItemType } from 'antd/lib/menu/hooks/useItems';
-import { Cursor } from '@shared/styles';
+import { Cursor, Flex, Space } from '@shared/styles';
 import WithAuth from './HOC/WithAuth';
 import { TSession } from '@shared/types/component';
+import { defaultUserProfile } from '@shared/utils';
 
 const Header = ({ session }: THeaderProps) => {
     const { Header } = Layout;
@@ -21,11 +22,17 @@ const Header = ({ session }: THeaderProps) => {
                 key: 'candidates',
                 icon: <UsergroupAddOutlined />,
                 label: 'Candidates',
-                onClick: () => router.push('/candidates')
+                onClick: () => router.push('/')
             },
             {
                 key: 'settings',
-                label: session?.user?.name,
+                label: (
+                    <Flex justifyContent={'center'} alignItems={'center'}>
+                        <Avatar src={session?.user?.image || defaultUserProfile} icon={<UserOutlined />} />
+                        <Space left={1} />
+                        {session?.user?.name}
+                    </Flex>
+                ),
                 children: [
                     {
                         key: 'Settings',
@@ -80,6 +87,10 @@ const Container = styled.div`
     }
     .right-menu{
         justify-content: flex-end;
+    }
+    .ant-avatar > img {
+        border: 1px solid #4c4c4c;
+        border-radius: 100%;
     }
 `;
 

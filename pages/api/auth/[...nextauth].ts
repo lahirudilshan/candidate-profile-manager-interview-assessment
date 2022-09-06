@@ -21,12 +21,12 @@ export default NextAuth({
                     const save = await axios.post(`${process.env.NEXTAUTH_URL}/api/auth/create`, {
                         name: user.name,
                         profilePicture: user.image,
-                        email: user.email
+                        email: user.email,
+                        profileURL: user.email?.split('@')[0]
                     });
-
-                    console.log(save);
                 }
             } catch (error) {
+                console.log('error', error);
                 return false
             }
 

@@ -18,23 +18,28 @@ model Candidate {
   age             Int
   isPublic        Boolean          @default(false)
   workExperiences WorkExperience[]
+  profileURL      String           @unique
+  createdAt       DateTime?        @default(now())
 }
 
 model WorkExperience {
-  id             Int        @id @default(autoincrement())
-  candidate      Candidate? @relation(fields: [candidateId], references: [id], onDelete: SetNull)
+  id             Int       @id @default(autoincrement())
+  candidate      Candidate @relation(fields: [candidateId], references: [id], onDelete: SetNull)
   candidateId    Int
-  companyId      Int        @unique
-  company        Company?
+  companyId      Int
+  company        Company?  @relation(fields: [companyId], references: [id])
   jobTitle       String
   jobDescription String
   startDate      String
-  endDate        String
+  endDate        String?
+  createdAt      DateTime? @default(now())
+
+  @@index([companyId])
 }
 
 model Company {
-  id             Int             @id @default(autoincrement())
-  name           String          @db.VarChar(255)
-  logo           String          @db.VarChar(255)
-  WorkExperience WorkExperience? @relation(fields: [id], references: [companyId], onDelete: SetNull)
+  id             Int              @id @default(autoincrement())
+  name           String           @db.VarChar(255)
+  logo           String           @db.VarChar(255)
+  WorkExperience WorkExperience[]
 }

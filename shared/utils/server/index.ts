@@ -1,3 +1,4 @@
+import { getSession } from 'next-auth/react';
 import path from "path";
 import { promises as fs } from "fs";
 import formidable from "formidable";
@@ -43,20 +44,41 @@ type TSaveFileParams = {
 /**
  * save file on server
  * @param { uploadPath: string, file: File }
+ * @return boolean
  */
-export const saveFile = async ({ uploadPath = `/public/uploads/`, file }: TSaveFileParams) => {
-    /* Create directory for uploads */
-    const targetPath = path.join(process.cwd(), uploadPath);
-
+export const saveFile = async ({ uploadPath = `/static/images/profile-pictures/`, file }: TSaveFileParams) => {
     try {
-        await fs.access(targetPath);
-    } catch (e) {
-        await fs.mkdir(targetPath);
+        const targetPath = path.join(process.cwd(), '/public' + uploadPath);
+
+        try {
+            await fs.access(targetPath);
+        } catch (e) {
+            await fs.mkdir(targetPath);
+        }
+
+        if (!file) throw Error('File not found');
+
+        const tempPath = file.filepath;
+        const fileName = Date.now() + '_' + file.originalFilename;
+        const savePath = targetPath + fileName;
+        const publicPath = process.env.NEXTAUTH_URL + uploadPath + fileName;
+        await fs.rename(tempPath, savePath);
+
+        return publicPath;
+    } catch (error) {
+        return false;
     }
+}
 
-    /* Move uploaded files to directory */
-    if (!file) throw Error('File not found');
+/**
+ * check user authenticated or not
+ * @param req: NextApiRequest 
+ * @returns session: Session | null
+ */
+export const checkAuth = async (req: NextApiRequest) => {
+    const session = await getSession({ req });
 
-    const tempPath = file.filepath;
-    await fs.rename(tempPath, targetPath + file.originalFilename);
+    if (!session) throw Error('user must be login in');
+
+    return session;
 }

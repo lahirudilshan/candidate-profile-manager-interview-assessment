@@ -1,18 +1,16 @@
-import React, { useState } from 'react';
-import Dragger from 'antd/lib/upload/Dragger';
-import { CameraOutlined, CloudUploadOutlined } from '@ant-design/icons';
+import React from 'react';
+import { CameraOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import { TAPIPromise } from '@shared/types/service';
-import type { UploadRequestOption } from 'rc-upload/lib/interface';
-import uploadFile, { TUploadFileResponse } from '@shared/services/files/upload'
-import Upload, { RcFile, UploadChangeParam, UploadFile } from 'antd/lib/upload';
+import uploadFile from '@shared/services/files/upload'
+import Upload, { RcFile, UploadFile } from 'antd/lib/upload';
 import { getBase64 } from '@shared/utils';
+import { message } from 'antd';
 
 const FileUploader = ({
     icon = <CameraOutlined />,
     onPreviewURlChange,
-    onRemove,
-    api = '/api/auth/update'
+    onRemove
 }: TFileUploaderProps) => {
     /**
      * upload file
@@ -30,12 +28,16 @@ const FileUploader = ({
                 file: formData
             })
                 .then(response => {
+                    message.success('Profile picture has been uploaded!', 10)
+
                     resolve({
                         success: true,
                         data: response,
                     });
                 })
                 .catch(error => {
+                    message.error('Profile picture failed to upload!', 10)
+
                     resolve({
                         success: false,
                         data: error,
@@ -44,8 +46,12 @@ const FileUploader = ({
         });
     };
 
+    /**
+     * handle file upload
+     * @param file: RcFile 
+     * @returns Promise<boolean>
+     */
     const handleChange = async (file: RcFile) => {
-        console.log(file);
         try {
             const url = await getBase64(file as RcFile);
 
@@ -54,6 +60,7 @@ const FileUploader = ({
         } catch (error) {
             console.log(error);
         }
+
         return false;
     }
 
@@ -74,11 +81,11 @@ const FileUploader = ({
 // types
 type TFileUploaderProps = {
     icon?: React.ReactNode;
-    api?: string;
     onPreviewURlChange: (URL: string) => void
     onRemove: ((file: UploadFile<any>) => boolean | void | Promise<boolean | void>) | undefined
 };
 
+// styles
 const FileUploaderContainer = styled.div`
     cursor: pointer;
     .anticon {

@@ -1,6 +1,7 @@
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import React, { ComponentType } from 'react'
+import Loader from '../Loader';
 
 function WithAuth<T>(Component: ComponentType<T>) {
     return (HOCProps: Omit<T, 'session'>) => {
@@ -9,11 +10,11 @@ function WithAuth<T>(Component: ComponentType<T>) {
 
         switch (data.status) {
             case 'loading':
-                return <div>Loading</div>
+                return <Loader type='fullscreen' />
                 break;
             case 'unauthenticated':
-                if (router.asPath !== '/') router.push('/');
-                return <Component {...HOCProps} session={data.data} />
+                if (router.asPath !== '/' && router.pathname !== '/profiles/[...slug]') router.push('/');
+                return <Component {...HOCProps} session={null} />
                 break;
             case 'authenticated':
                 return <Component {...HOCProps} session={data.data} />

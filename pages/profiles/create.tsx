@@ -1,32 +1,39 @@
-import { CheckOutlined } from '@ant-design/icons';
+import { CheckOutlined, EyeOutlined } from '@ant-design/icons';
 import BasicInfoForm from '@modules/profiles/components/BasicInfoForm';
 import { TCandidate } from '@modules/profiles/types/entity';
-import { TFetchProfileResponse } from '@modules/profiles/types/work-experience/service';
+import { TFetchProfileResponse } from '@modules/profiles/types/service';
 import { Candidate } from '@prisma/client';
 import { PageContent, ProfilePicture } from '@shared/components';
 import WithAuth from '@shared/components/HOC/WithAuth';
 import TitleBar from '@shared/components/TitleBar';
 import { Space, CustomDivider, Flex, } from '@shared/styles';
-import { TSession } from '@shared/types/component';
-import { Button, Col, Row, Switch } from 'antd';
+import { TLoader, TSession } from '@shared/types/component';
+import { Button, Col, Form, message, Row, Switch } from 'antd';
 import axios from 'axios';
 import dynamic from 'next/dynamic';
-import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import React, { useCallback, useEffect, useState } from 'react';
 
-const DynamicWorkExperience = dynamic(() => import('@modules/profiles/screen/Profile'), {
+const DynamicWorkExperience = dynamic(() => import('@modules/profiles/screen/WorkExperience'), {
     ssr: false,
-})
+});
 
 const create = ({ session }: TCreateProps) => {
     // hooks
+    const [form] = Form.useForm();
+    const router = useRouter();
 
     // status
     const [user, setUser] = useState<TCandidate | undefined>();
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [disableSubmitButton, setDisableSubmitButton] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<TLoader>({
+        fullScreen: false,
+        content: false
+    });
 
     // effects
     useEffect(() => {
-        handleFetchUserDetails();
+        session && handleFetchUserDetails();
 
         return () => { }
     }, []);
@@ -36,52 +43,121 @@ const create = ({ session }: TCreateProps) => {
      * @return void
      */
     const handleFetchUserDetails = async () => {
-        setIsLoading(true);
+        setIsLoading({
+            ...isLoading,
+            fullScreen: true
+        });
 
         axios.post('/api/auth/fetch', {
             email: session.user?.email
         })
-            .then((response: TFetchProfileResponse) => setUser(response.data.data))
-            .catch((error) => console.log('error', error))
-            .finally(() => setIsLoading(false));
+            .then((response: TFetchProfileResponse) => {
+                setUser(response.data.data)
+            })
+            .catch((error) => {
+                console.log('error', error)
+            })
+            .finally(() => {
+                setIsLoading({
+                    ...isLoading,
+                    fullScreen: false
+                })
+            });
 
     }
 
+    /**
+     * handle basic info save 
+     * @param data Partial<Candidate>
+     * @return void
+     */
+    const handleSubmit = useCallback((data: Partial<Candidate>) => {
+        setIsLoading({
+            ...isLoading,
+            content: true
+        });
 
-    const handleFileUploadSuccess = () => {
+        axios.post('/api/auth/update', {
+            name: data.name,
+            age: data.age,
+            profileURL: form.getFieldValue('profileURL')
+        })
+            .then(() => {
+                message.success('Profile has been updated!', 6);
+            })
+            .catch((error) => {
+                message.error(`Something went wrong, Profile couldn't updated`, 6);
+            })
+            .finally(() => {
+                setIsLoading({
+                    ...isLoading,
+                    content: false
+                });
+            });
+    }, [isLoading]);
 
-    }
+    /**
+     * handle profile privacy
+     * @param value: boolean
+     * @return void
+     */
+    const handleAccountPrivacy = useCallback((value: boolean) => {
+        setIsLoading({
+            ...isLoading,
+            content: true
+        });
 
-    const handleFileRemove = () => {
+        axios.post('/api/auth/update', {
+            isPublic: value,
+        })
+            .then(() => {
+                message.success(`Profile has been changed to ${value ? 'public' : 'private'}`, 6);
+            })
+            .catch((error) => {
+                message.error(`Something went wrong, Profile couldn't updated`, 6);
+            })
+            .finally(() => {
+                setIsLoading({
+                    ...isLoading,
+                    content: false
+                });
+            });
 
-    }
-
-    const handleSave = () => {
-
-    }
+    }, [isLoading]);
 
     return (
         <PageContent >
             <Row>
                 <Col lg={24}>
                     <TitleBar title="Manage Profile" bottom={2} action={
-                        <Flex>
-                            <Space right={1}>
-                                Available to Public
-                            </Space>
-                            <Switch defaultChecked onChange={() => { }} />
+                        <Flex alignItems={'center'}>
+                            <Flex alignItems={'center'}>
+                                <Space right={1}>
+                                    Available to Public
+                                </Space>
+                                {user !== undefined && <Switch defaultChecked={user?.isPublic} onChange={handleAccountPrivacy} />}
+                            </Flex>
+                            <Space right={2} />
+                            {user?.profileURL && <Button type='primary' icon={<EyeOutlined />} onClick={() => router.push(`/profiles/${user?.profileURL}`)}>View as guest</Button>}
                         </Flex>
                     } />
                 </Col>
                 <Col lg={4}>
                     <ProfilePicture src={user?.profilePicture} />
                     <Space top={2} />
-                    <BasicInfoForm data={user} />
-                    <Flex justifyContent={'flex-end'}>
-                        <Button type="primary" key="add-work-experience" icon={<CheckOutlined />} onClick={() => handleSave()} block>
-                            Save changes
-                        </Button>
-                    </Flex>
+                    <Form
+                        form={form}
+                        name="basic_info"
+                        layout="vertical"
+                        onFinish={handleSubmit}
+                    >
+                        <BasicInfoForm form={form} data={user} disableSubmitButton={setDisableSubmitButton} />
+                        <Flex justifyContent={'flex-end'}>
+                            <Button type="primary" htmlType='submit' disabled={disableSubmitButton || isLoading.content} loading={isLoading.content} key="add-work-experience" icon={<CheckOutlined />} block>
+                                Save changes
+                            </Button>
+                        </Flex>
+                    </Form>
                 </Col>
                 <Col lg={2}>
                     <Flex height='100%' justifyContent={'center'} alignItems={'center'}>
@@ -89,7 +165,7 @@ const create = ({ session }: TCreateProps) => {
                     </Flex>
                 </Col>
                 <Col lg={18}>
-                    <DynamicWorkExperience data={user?.workExperiences} />
+                    <DynamicWorkExperience user={user} data={user?.workExperiences} />
                 </Col>
             </Row>
         </PageContent>

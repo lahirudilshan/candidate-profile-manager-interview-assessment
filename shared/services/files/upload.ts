@@ -1,28 +1,26 @@
-import axios, { AxiosRequestConfig } from 'axios';
+import axios from 'axios';
 
+/**
+ * file upload
+ * @param { file }: TUploadFile 
+ * @returns Promise<string | TUploadFileResponse>
+ */
 const uploadFile = async ({ file }: TUploadFile) => {
     try {
-        // 👇️ const data: GetUsersResponse
         const { data, status } = await axios.post<TUploadFileResponse>(
-            '/api/auth/update',
+            '/api/auth/upload',
             file
         );
-
-        console.log(status, data);
 
         return data;
     } catch (error) {
         if (axios.isAxiosError(error)) {
-            console.log('error message: ', error.message);
             return error.message;
         } else {
-            console.log('unexpected error: ', error);
             return 'An unexpected error occurred';
         }
     }
 }
-
-export default uploadFile;
 
 // types
 export type TUploadFileResponse = {
@@ -32,3 +30,6 @@ export type TUploadFileResponse = {
 export type TUploadFile = {
     file: FormData;
 }
+
+export default uploadFile;
+

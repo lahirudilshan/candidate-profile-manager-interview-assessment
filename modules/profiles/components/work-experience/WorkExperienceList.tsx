@@ -1,18 +1,20 @@
 import { Avatar, Button, List, Typography } from 'antd'
 import React from 'react'
 import VirtualList from 'rc-virtual-list';
-import { ExpandOutlined } from '@ant-design/icons';
+import { DeleteOutlined, ExpandOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import { TWorkExperience } from '@modules/profiles/types/work-experience/entity';
+import { dateFormat } from '@shared/utils';
+import { Space } from '@shared/styles';
 
-const WorkExperienceList = ({ data, mode = 'edit' }: TWorkExperienceListProps) => {
+const WorkExperienceList = ({ data, mode = 'edit', onAction }: TWorkExperienceListProps) => {
     return (
         <WorkExperienceListContainer>
             <List>
                 <VirtualList
                     data={data}
                     itemHeight={47}
-                    itemKey="experiences"
+                    itemKey="id"
                     onScroll={() => { }}
                 >
                     {(item: TWorkExperience) => (
@@ -26,11 +28,19 @@ const WorkExperienceList = ({ data, mode = 'edit' }: TWorkExperienceListProps) =
                                     <>
                                         <Typography.Title level={5} type='secondary'>{item.jobDescription}</Typography.Title>
                                         <Typography.Title level={5} type='secondary'>{item?.company?.name}</Typography.Title>
-                                        <Typography.Text type='secondary'>{item.startDate} - {item.startDate ? item.startDate : 'Present'}</Typography.Text>
+                                        <Typography.Text type='secondary'>
+                                            {dateFormat(item.startDate)} - {item.endDate ? dateFormat(item.endDate) : 'Present'}
+                                        </Typography.Text>
                                     </>
                                 }
                             />
-                            {mode === 'edit' && <Button icon={<ExpandOutlined />}>Edit</Button>}
+                            {mode === 'edit' && (
+                                <>
+                                    <Button icon={<ExpandOutlined />} type='primary' onClick={() => onAction && onAction({ action: 'edit', data: item })} ghost>Edit</Button>
+                                    <Space left={1} />
+                                    <Button icon={<DeleteOutlined />} onClick={() => onAction && onAction({ action: 'delete', data: item })} danger>Delete</Button>
+                                </>
+                            )}
                         </List.Item>
                     )}
                 </VirtualList>
@@ -60,6 +70,7 @@ const WorkExperienceListContainer = styled.div`
 type TWorkExperienceListProps = {
     data: TWorkExperience[];
     mode?: 'view' | 'edit';
+    onAction?: ({ action, data }: { action: 'edit' | 'delete', data: TWorkExperience }) => void
 }
 
 export default WorkExperienceList

@@ -1,32 +1,47 @@
-import { TCommonResponse } from '@modules/profiles/types/work-experience/service';
-import { getFileFromRequest } from '@shared/utils/server/index';
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { saveFile } from '@shared/utils/server';
+import { TCandidate } from '@modules/profiles/types/entity';
+import { Candidate } from '@prisma/client';
+import { TCommonResponse } from '@shared/types/service';
+import { checkAuth } from '@shared/utils/server';
+import prisma from 'lib/prisma'
+import type { NextApiRequest, NextApiResponse } from 'next'
 
-export const config = {
-    api: {
-        bodyParser: false,
-    }
-};
-
-export default async (req: NextApiRequest, res: NextApiResponse<TCommonResponse<any>>) => {
+export default async (
+    req: NextApiRequest,
+    res: NextApiResponse<TCommonResponse<Candidate | null | Record<string, string>[]>>
+) => {
     try {
-        const file = await getFileFromRequest({ req });
+        if (req.method !== 'POST') return res.status(405).json({ success: false, data: null, message: 'Method not allowed' })
 
-        if (!file) throw Error('Something went wrong!');
+        const session = await checkAuth(req);
 
-        saveFile({ file });
+        let user: Partial<TCandidate> = {};
+
+        if (req.body) {
+            if (req.body.name) user['name'] = req.body.name;
+            if (req.body.age) user['age'] = req.body.age;
+            if (req.body.isPublic !== undefined) user['isPublic'] = req.body.isPublic;
+            if (req.body.profileURL !== undefined) user['profileURL'] = req.body.profileURL;
+        }
+
+        const save = await prisma.candidate.update({
+            where: {
+                email: session!.user!.email as string
+            },
+            data: user
+        });
 
         return res.status(200).json({
             success: true,
-            data: [],
-            message: 'File has been uploaded!'
+            data: save,
+            message: 'User info successfully save!'
         });
-    } catch (error) {
-        return res.status(500).json({
-            success: true,
-            data: [],
-            message: 'Something went wrong!'
+    } catch (error: any) {
+        console.log(error);
+
+        return res.status(400).json({
+            success: false,
+            data: error,
+            message: 'something went wrong!'
         });
     }
 }

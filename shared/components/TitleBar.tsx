@@ -1,5 +1,4 @@
 import { Flex, Space, Title } from '@shared/styles'
-import { Divider } from 'antd'
 import React from 'react'
 
 const TitleBar = ({ title, bottom = 1, action = null }: TTitleBarProps) => {
@@ -19,7 +18,7 @@ const TitleBar = ({ title, bottom = 1, action = null }: TTitleBarProps) => {
 
 // types
 type TTitleBarProps = {
-    title: string;
+    title: string | React.ReactNode;
     bottom?: number;
     action?: React.ReactNode;
 }
