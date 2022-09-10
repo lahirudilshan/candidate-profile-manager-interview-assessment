@@ -1,0 +1,1 @@
+export type TYearsOfExperienceParams = { startDate: string | Date, endDate: string | Date | null }

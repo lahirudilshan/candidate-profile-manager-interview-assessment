@@ -24,7 +24,7 @@ model Candidate {
 
 model WorkExperience {
   id             Int       @id @default(autoincrement())
-  candidate      Candidate @relation(fields: [candidateId], references: [id], onDelete: SetNull)
+  candidate      Candidate @relation(fields: [candidateId], references: [id], onDelete: Cascade)
   candidateId    Int
   companyId      Int
   company        Company?  @relation(fields: [companyId], references: [id])

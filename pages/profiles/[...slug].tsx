@@ -4,11 +4,11 @@ import { CustomDivider, Flex, Space } from '@shared/styles';
 import { Button, Col, Image, Result, Row, Typography } from 'antd';
 import axios from 'axios';
 import dynamic from 'next/dynamic';
-import React from 'react';
+import React, { useCallback } from 'react';
 import styled from 'styled-components';
 import { useRouter } from 'next/router'
 import { TCommonResponse } from '@shared/types/service';
-import { defaultUserProfile, getLatestExperience } from '@shared/utils';
+import { defaultUserProfile, getLatestExperience, getTotalYearsOfExperienceWithText } from '@shared/utils';
 
 export async function getServerSideProps(context: any) {
   let candidate = null;
@@ -32,6 +32,18 @@ const ProfileView = ({ candidate }: TProfileViewProps) => {
   // hooks
   const router = useRouter();
 
+  /**
+     * get years of experience
+     * @param candidate: TCandidate
+     * @return void
+     */
+  const yearsOfExperience = useCallback((candidate: TCandidate) => {
+    return getTotalYearsOfExperienceWithText({
+      startDate: candidate.workExperiences[0].startDate,
+      endDate: getLatestExperience(candidate)?.startDate
+    });
+  }, []);
+
   return (
     <ProfileViewContainer>
       {
@@ -51,7 +63,14 @@ const ProfileView = ({ candidate }: TProfileViewProps) => {
                     <Space top={3} />
                     {candidate && candidate.workExperiences && candidate.workExperiences.length > 0 && (
                       <>
-                        <Typography.Title level={4} type="secondary">Work Experience</Typography.Title>
+                        <Typography.Title level={4} type="secondary">
+                          <Flex justifyContent={'space-between'} alignItems={'center'}>
+                            <div>Work Experience</div>
+                            <div>
+                              {yearsOfExperience(candidate)}
+                            </div>
+                          </Flex>
+                        </Typography.Title>
                         <CustomDivider margin={0} />
                         <DynamicWorkExperienceList data={candidate.workExperiences} mode="view" />
                       </>

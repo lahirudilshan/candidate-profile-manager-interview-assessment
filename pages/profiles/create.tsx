@@ -42,7 +42,7 @@ const create = ({ session }: TCreateProps) => {
      * handle fetch user details
      * @return void
      */
-    const handleFetchUserDetails = async () => {
+    const handleFetchUserDetails = useCallback(async () => {
         setIsLoading({
             ...isLoading,
             fullScreen: true
@@ -64,7 +64,7 @@ const create = ({ session }: TCreateProps) => {
                 })
             });
 
-    }
+    }, [isLoading]);
 
     /**
      * handle basic info save 
@@ -151,7 +151,7 @@ const create = ({ session }: TCreateProps) => {
                         layout="vertical"
                         onFinish={handleSubmit}
                     >
-                        <BasicInfoForm form={form} data={user} disableSubmitButton={setDisableSubmitButton} />
+                        <BasicInfoForm form={form} data={user} updateData={setUser} disableSubmitButton={setDisableSubmitButton} />
                         <Flex justifyContent={'flex-end'}>
                             <Button type="primary" htmlType='submit' disabled={disableSubmitButton || isLoading.content} loading={isLoading.content} key="add-work-experience" icon={<CheckOutlined />} block>
                                 Save changes

@@ -3,6 +3,7 @@ import { TCandidate } from "@modules/profiles/types/entity";
 import { FormInstance } from "antd";
 import { RcFile } from "antd/lib/upload";
 import moment from "moment";
+import { TYearsOfExperienceParams } from '@shared/types/utils';
 
 // variables
 export const defaultUserProfile = '/static/images/default-user.jpeg';
@@ -98,3 +99,20 @@ export const stringToSlug = (text: string) => {
 export const removeSpaces = (value: string) => {
     return value.replace(/^\s+|\s+$/gm, '');
 };
+
+/**
+ * get total years of experience
+ * @param { startDate: string | Date, endDate: string | Date | null }
+ * @return void
+ */
+export const getTotalYearsOfExperience = ({ startDate, endDate }: TYearsOfExperienceParams) => {
+    startDate = new Date(startDate);
+    endDate = new Date(endDate && endDate || new Date());
+
+    return Math.abs(startDate.getUTCFullYear() - endDate.getUTCFullYear());
+}
+
+export const getTotalYearsOfExperienceWithText = ({ startDate, endDate }: TYearsOfExperienceParams) => {
+    const totalYearsOfExperience = getTotalYearsOfExperience({ startDate, endDate });
+    return totalYearsOfExperience && `${totalYearsOfExperience}+ Years of Experience` || 'No Experience candidate'
+}

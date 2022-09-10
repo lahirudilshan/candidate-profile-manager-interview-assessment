@@ -1,5 +1,5 @@
 import { Avatar, Image, List, Result, Typography } from 'antd'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import styled from 'styled-components';
 import { TFetchCandidateParams, TFetchCandidatesResponse } from '@modules/candidates/types/candidate';
 import VirtualList from 'rc-virtual-list';
@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 import { TLoader } from '@shared/types/component';
 import axios from 'axios';
 import { TCandidate } from '@modules/profiles/types/entity';
-import { dateFormat, getLatestExperience, removeSpaces } from '@shared/utils';
+import { dateFormat, getLatestExperience, getTotalYearsOfExperience, getTotalYearsOfExperienceWithText, removeSpaces } from '@shared/utils';
 import SearchInput from '@shared/components/SearchInput';
 import Loader from '@shared/components/Loader';
 
@@ -81,6 +81,18 @@ const Candidate: React.FC = () => {
         router.push(`/profiles/${candidate.profileURL}`);
     }, []);
 
+    /**
+     * get years of experience
+     * @param candidate: TCandidate
+     * @return void
+     */
+    const yearsOfExperience = useCallback((candidate: TCandidate) => {
+        return getTotalYearsOfExperienceWithText({
+            startDate: candidate.workExperiences[0].startDate,
+            endDate: getLatestExperience(candidate)?.startDate
+        });
+    }, []);
+
     return (
         <WorkExperienceListContainer>
             <Space size={1}>
@@ -119,7 +131,7 @@ const Candidate: React.FC = () => {
                                                                 {getLatestExperience(candidate)?.company.name}
                                                             </Typography.Title>
                                                             <Typography.Text type='secondary'>
-                                                                {dateFormat(getLatestExperience(candidate)?.startDate)} - {dateFormat(getLatestExperience(candidate)?.endDate || undefined) || 'Present'}
+                                                                {yearsOfExperience(candidate)}
                                                             </Typography.Text>
                                                         </>
                                                     }

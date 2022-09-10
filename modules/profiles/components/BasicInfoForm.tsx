@@ -1,13 +1,14 @@
 import { Candidate } from '@prisma/client';
 import { Form, FormInstance, Input, Select, Typography } from 'antd'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
 import { CheckOutlined, CloseOutlined, LoadingOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { TFetchCommonResponse } from '@shared/types/service';
 import { TLoader } from '@shared/types/component';
 import { stringToSlug } from '@shared/utils';
+import { TCandidate } from '../types/entity';
 
-const ProfileBasicInfoForm: React.FC<TProfileBasicInfoFormProps> = ({ form, data, disableSubmitButton }: TProfileBasicInfoFormProps) => {
+const ProfileBasicInfoForm: React.FC<TProfileBasicInfoFormProps> = ({ form, data, updateData, disableSubmitButton }: TProfileBasicInfoFormProps) => {
     // state
     const [profileURL, setProfileURL] = useState<string | undefined>(undefined);
     const [validURL, setValidURL] = useState<boolean>(true);
@@ -34,6 +35,13 @@ const ProfileBasicInfoForm: React.FC<TProfileBasicInfoFormProps> = ({ form, data
 
     useEffect(() => {
         form.setFieldValue('profileURL', profileURL || undefined);
+
+        if (data && profileURL && validURL) {
+            updateData && updateData({
+                ...data,
+                profileURL
+            });
+        }
     }, [profileURL])
 
 
@@ -141,7 +149,8 @@ const ProfileBasicInfoForm: React.FC<TProfileBasicInfoFormProps> = ({ form, data
 
 // types
 type TProfileBasicInfoFormProps = {
-    data: Candidate | undefined;
+    data: TCandidate | undefined;
+    updateData: React.Dispatch<React.SetStateAction<TCandidate | undefined>>;
     form: FormInstance<Partial<Candidate>>;
     disableSubmitButton: (status: boolean) => void
 }
