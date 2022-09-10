@@ -38,7 +38,7 @@ const Breadcrumb = () => {
   return (
     <BreadcrumbContainer>
       <AntdBreadcrumb>
-        <AntdBreadcrumb.Item>Home</AntdBreadcrumb.Item>
+        <AntdBreadcrumb.Item onClick={() => handleBreadcrumbNavigation('/')}>Home</AntdBreadcrumb.Item>
         {breadcrumbs && breadcrumbs}
       </AntdBreadcrumb>
     </BreadcrumbContainer>
