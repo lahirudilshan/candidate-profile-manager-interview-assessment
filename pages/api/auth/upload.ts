@@ -38,7 +38,7 @@ export default async (req: NextApiRequest, res: NextApiResponse<TCommonResponse<
 
         return res.status(200).json({
             success: true,
-            data: save,
+            data: path,
             message: 'File has been uploaded!'
         });
     } catch (error) {
