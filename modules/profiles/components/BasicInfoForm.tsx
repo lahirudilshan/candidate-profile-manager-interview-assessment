@@ -7,8 +7,12 @@ import { TFetchCommonResponse } from '@shared/types/service';
 import { TLoader } from '@shared/types/component';
 import { stringToSlug } from '@shared/utils';
 import { TCandidate } from '../types/entity';
+import { useAPIAbort } from '@shared/hooks';
 
 const ProfileBasicInfoForm: React.FC<TProfileBasicInfoFormProps> = ({ form, data, updateData, disableSubmitButton }: TProfileBasicInfoFormProps) => {
+    // hooks
+    const signal = useAPIAbort();
+
     // state
     const [profileURL, setProfileURL] = useState<string | undefined>(undefined);
     const [validURL, setValidURL] = useState<boolean>(true);
@@ -76,7 +80,7 @@ const ProfileBasicInfoForm: React.FC<TProfileBasicInfoFormProps> = ({ form, data
     const checkURLAvailability = useCallback((requestedURL: string) => {
         axios.post('/api/auth/check-public-url', {
             profileURL: requestedURL
-        })
+        }, { signal })
             .then((response: TFetchCommonResponse<boolean>) => {
                 console.log(response.data.data);
                 setValidURL(response.data.data ? true : false);

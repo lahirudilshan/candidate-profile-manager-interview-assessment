@@ -10,7 +10,7 @@ function WithAuth<T>(Component: ComponentType<T>) {
 
         switch (data.status) {
             case 'loading':
-                return <Loader type='fullscreen' />
+                return null; // <Loader type='fullscreen' />
                 break;
             case 'unauthenticated':
                 if (router.asPath !== '/' && router.pathname !== '/profiles/[...slug]') router.push('/');

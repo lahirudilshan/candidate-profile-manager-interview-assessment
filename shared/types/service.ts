@@ -1,4 +1,9 @@
 import { AxiosResponse } from 'axios';
+
+export type TAPISignal = {
+    signal: AbortSignal
+}
+
 export type TAPIPromise<T = any> = {
     success: boolean;
     data: T;

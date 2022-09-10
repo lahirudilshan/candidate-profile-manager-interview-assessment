@@ -11,25 +11,22 @@ import { TCandidate } from '@modules/profiles/types/entity';
 import { getLatestExperience, getTotalYearsOfExperienceWithText, removeSpaces } from '@shared/utils';
 import SearchInput from '@shared/components/SearchInput';
 import Loader from '@shared/components/Loader';
+import { useAPIAbort } from '@shared/hooks';
 
-const Candidate: React.FC = () => {
+const Candidate: React.FC<TCandidateProps> = ({ data }) => {
     // hooks
     const router = useRouter();
+    const signal = useAPIAbort();
 
     // state
-    const [candidates, setCandidates] = useState<TCandidate[]>();
+    const [candidates, setCandidates] = useState<TCandidate[]>(data);
     const [isLoading, setIsLoading] = useState<TLoader>({
-        fullScreen: true,
+        fullScreen: false,
     });
 
     // refs
     const searchRef = useRef<string | null>(null);
     const searchDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
-    // effects
-    useEffect(() => {
-        fetchCandidates();
-    }, []);
 
     /**
     * search candidate profiles
@@ -58,7 +55,7 @@ const Candidate: React.FC = () => {
     const fetchCandidates = useCallback(({ q = null }: TFetchCandidateParams = {}) => {
         axios.post('/api/candidates/fetch', {
             q
-        })
+        }, { signal })
             .then((response: TFetchCandidatesResponse) => {
                 if (response.data.data) setCandidates(response.data.data);
             })
@@ -146,7 +143,7 @@ const Candidate: React.FC = () => {
                     </List>
                     : (
                         <Result
-                            title="Candidates not founds"
+                            title="No candidates found"
                         />
                     )}
         </WorkExperienceListContainer>
@@ -181,5 +178,10 @@ const WorkExperienceListContainer = styled.div`
         margin-right: 10px;
     }
 `;
+
+// types
+type TCandidateProps = {
+    data: TCandidate[]
+}
 
 export default Candidate

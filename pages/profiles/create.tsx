@@ -6,6 +6,7 @@ import { Candidate } from '@prisma/client';
 import { PageContent, ProfilePicture } from '@shared/components';
 import WithAuth from '@shared/components/HOC/WithAuth';
 import TitleBar from '@shared/components/TitleBar';
+import { useAPIAbort } from '@shared/hooks';
 import { Space, CustomDivider, Flex, } from '@shared/styles';
 import { TLoader, TSession } from '@shared/types/component';
 import { Button, Col, Form, message, Row, Switch } from 'antd';
@@ -22,6 +23,7 @@ const create = ({ session }: TCreateProps) => {
     // hooks
     const [form] = Form.useForm();
     const router = useRouter();
+    const signal = useAPIAbort();
 
     // status
     const [user, setUser] = useState<TCandidate | undefined>();
@@ -50,7 +52,7 @@ const create = ({ session }: TCreateProps) => {
 
         axios.post('/api/auth/fetch', {
             email: session.user?.email
-        })
+        }, { signal })
             .then((response: TFetchProfileResponse) => {
                 setUser(response.data.data)
             })
@@ -81,7 +83,7 @@ const create = ({ session }: TCreateProps) => {
             name: data.name,
             age: data.age,
             profileURL: form.getFieldValue('profileURL')
-        })
+        }, { signal })
             .then(() => {
                 message.success('Profile has been updated!', 6);
             })
@@ -109,7 +111,7 @@ const create = ({ session }: TCreateProps) => {
 
         axios.post('/api/auth/update', {
             isPublic: value,
-        })
+        }, { signal })
             .then(() => {
                 message.success(`Profile has been changed to ${value ? 'public' : 'private'}`, 6);
             })

@@ -16,10 +16,12 @@ import Loader from '@shared/components/Loader';
 import moment from 'moment';
 import { WorkExperience } from '@prisma/client';
 import { TFetchProfileResponse } from '@modules/profiles/types/service';
+import { useAPIAbort } from '@shared/hooks';
 
 const WorkExperience: React.FC<TWorkExperienceProps> = ({ data, user }) => {
     // hooks
     const [form] = Form.useForm();
+    const signal = useAPIAbort();
 
     // state
     const [companies, setCompanies] = useState<TCompany[]>();
@@ -38,6 +40,10 @@ const WorkExperience: React.FC<TWorkExperienceProps> = ({ data, user }) => {
 
     // effects
     useEffect(() => {
+        fetchCompany();
+    }, [])
+
+    useEffect(() => {
         setExperiences(data ? data : []);
     }, [data])
 
@@ -47,7 +53,9 @@ const WorkExperience: React.FC<TWorkExperienceProps> = ({ data, user }) => {
      * @return void
      */
     const fetchCompany = useCallback(() => {
-        axios.get('/api/companies')
+        axios.get('/api/companies', {
+            signal
+        })
             .then((response: TCompanyResponse) => {
                 if (response.data.data) setCompanies(response.data.data);
             })
@@ -74,7 +82,7 @@ const WorkExperience: React.FC<TWorkExperienceProps> = ({ data, user }) => {
 
         axios.post('/api/auth/fetch', {
             email: user?.email
-        })
+        }, { signal })
             .then((response: TFetchProfileResponse) => {
                 if (response.data.data && response.data.data.workExperiences) {
                     setExperiences(response.data.data.workExperiences);
@@ -98,8 +106,6 @@ const WorkExperience: React.FC<TWorkExperienceProps> = ({ data, user }) => {
      * @return void
      */
     const handleModal = useCallback(({ status, data, mode }: TModalParams) => {
-        if (status) fetchCompany();
-
         form.resetFields();
 
         setModal({
@@ -140,7 +146,7 @@ const WorkExperience: React.FC<TWorkExperienceProps> = ({ data, user }) => {
 
             if (modal.mode === 'edit' && modal.data.id) payload.id = modal.data.id;
 
-            axios.post(`/api/experiences/${action}`, payload)
+            axios.post(`/api/experiences/${action}`, payload, { signal })
                 .then(() => {
                     handleModal({
                         ...modal,
@@ -182,7 +188,7 @@ const WorkExperience: React.FC<TWorkExperienceProps> = ({ data, user }) => {
 
             axios.post('/api/experiences/delete', {
                 id
-            })
+            }, { signal })
                 .then(() => {
                     handleModal({
                         status: false,
