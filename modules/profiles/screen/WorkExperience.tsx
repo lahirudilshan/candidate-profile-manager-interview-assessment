@@ -255,7 +255,7 @@ const WorkExperience: React.FC<TWorkExperienceProps> = ({ data, user }) => {
                 <WorkExperienceList data={experiences} onAction={handleAction} />
             ) : (<Bordered>
                 <Result
-                    title="No work Experience added!"
+                    title="No work experience added!"
                     extra={
                         <Button type="primary" key="add-work-experience" icon={<PlusOutlined />} onClick={() => handleModal({ status: true, mode: 'create' })}>
                             Add Work Experience
