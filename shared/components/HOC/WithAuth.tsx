@@ -4,7 +4,7 @@ import React, { ComponentType } from 'react'
 import Loader from '../Loader';
 
 function WithAuth<T>(Component: ComponentType<T>) {
-    return (HOCProps: Omit<T, 'session'>) => {
+    return (HOCProps: any) => {
         const router = useRouter();
         const data = useSession();
 

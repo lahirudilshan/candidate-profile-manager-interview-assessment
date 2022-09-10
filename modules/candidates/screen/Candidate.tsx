@@ -1,5 +1,5 @@
 import { Avatar, Image, List, Result, Typography } from 'antd'
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import styled from 'styled-components';
 import { TFetchCandidateParams, TFetchCandidatesResponse } from '@modules/candidates/types/candidate';
 import VirtualList from 'rc-virtual-list';
@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 import { TLoader } from '@shared/types/component';
 import axios from 'axios';
 import { TCandidate } from '@modules/profiles/types/entity';
-import { dateFormat, getLatestExperience, getTotalYearsOfExperience, getTotalYearsOfExperienceWithText, removeSpaces } from '@shared/utils';
+import { getLatestExperience, getTotalYearsOfExperienceWithText, removeSpaces } from '@shared/utils';
 import SearchInput from '@shared/components/SearchInput';
 import Loader from '@shared/components/Loader';
 

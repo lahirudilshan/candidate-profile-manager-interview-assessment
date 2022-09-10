@@ -112,7 +112,17 @@ export const getTotalYearsOfExperience = ({ startDate, endDate }: TYearsOfExperi
     return Math.abs(startDate.getUTCFullYear() - endDate.getUTCFullYear());
 }
 
+/**
+ * get total years of experience with texts 
+ * @param { startDate, endDate }: TYearsOfExperienceParams 
+ * @returns string
+ */
 export const getTotalYearsOfExperienceWithText = ({ startDate, endDate }: TYearsOfExperienceParams) => {
     const totalYearsOfExperience = getTotalYearsOfExperience({ startDate, endDate });
-    return totalYearsOfExperience && `${totalYearsOfExperience}+ Years of Experience` || 'No Experience candidate'
+
+    return totalYearsOfExperience ?
+        `${totalYearsOfExperience}+ Years of Experience` :
+        startDate ?
+            'Less than 1 Year experience' :
+            'No Experience candidate'
 }

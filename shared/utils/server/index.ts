@@ -1,7 +1,7 @@
 import { getSession } from 'next-auth/react';
 import path from "path";
 import { promises as fs } from "fs";
-import formidable from "formidable";
+import formidable, { File } from "formidable";
 import { NextApiRequest } from "next";
 
 /***************************
