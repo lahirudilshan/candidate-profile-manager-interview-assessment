@@ -1,4 +1,4 @@
-import { TWorkExperience } from './../../modules/profiles/types/work-experience/entity';
+import { TWorkExperience } from '@modules/profiles/types/work-experience/entity';
 import { TCandidate } from "@modules/profiles/types/entity";
 import { FormInstance } from "antd";
 import { RcFile } from "antd/lib/upload";

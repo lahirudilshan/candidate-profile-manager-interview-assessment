@@ -1,2 +1,1 @@
-// sd
 export type TComponent = {}

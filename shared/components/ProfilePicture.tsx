@@ -14,11 +14,6 @@ const ProfilePicture = ({ src }: TProfilePictureProps) => {
         setProfileURL(src);
     }, [src])
 
-
-    const handleOnFileRemove = () => {
-
-    }
-
     /**
      * handle file preview when file select
      * @param url 
@@ -32,7 +27,7 @@ const ProfilePicture = ({ src }: TProfilePictureProps) => {
                 <Bordered radius={'8px'}>
                     <Image src={profileURL || defaultUserProfile} preview={profileURL ? true : false} alt="candidate image" />
                 </Bordered>
-                <FileUploader onRemove={handleOnFileRemove} onPreviewURlChange={handlePreviewURL} />
+                <FileUploader onRemove={() => { }} onPreviewURlChange={handlePreviewURL} />
             </Position>
         </ProfileContainer>
     )

@@ -4,10 +4,7 @@ const useAPIAbort = () => {
     const abortControllerRef = useRef<AbortController>();
 
     useEffect(() => {
-        console.log('called');
-
         return () => {
-            console.log('API abort:', abortControllerRef.current);
             abortControllerRef.current?.abort();
         };
     }, []);

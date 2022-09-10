@@ -23,7 +23,7 @@ const WorkExperience: React.FC<TWorkExperienceProps> = ({ data, user }) => {
     const [form] = Form.useForm();
     const signal = useAPIAbort();
 
-    // state
+    // states
     const [companies, setCompanies] = useState<TCompany[]>();
     const [experiences, setExperiences] = useState<TWorkExperience[]>([]);
 

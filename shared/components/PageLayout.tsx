@@ -8,6 +8,7 @@ import styled from 'styled-components';
 const { Content } = Layout;
 
 const PageLayout: React.FC<TProps> = ({ children }: TProps) => {
+  // hooks
   const router = useRouter();
   const breadcrumbShouldNotInclude = ['/'];
 

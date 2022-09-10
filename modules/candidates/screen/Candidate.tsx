@@ -1,5 +1,5 @@
 import { Avatar, Image, List, Result, Typography } from 'antd'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 import styled from 'styled-components';
 import { TFetchCandidateParams, TFetchCandidatesResponse } from '@modules/candidates/types/candidate';
 import VirtualList from 'rc-virtual-list';
