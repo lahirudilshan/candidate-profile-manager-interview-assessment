@@ -1,4 +1,4 @@
-import { Avatar, Image, Layout, Menu } from 'antd';
+import { Avatar, Layout, Menu } from 'antd';
 import React from 'react'
 import styled from 'styled-components';
 import { PoweroffOutlined, SettingOutlined, UnlockOutlined, UsergroupAddOutlined, UserOutlined } from '@ant-design/icons'
@@ -11,6 +11,7 @@ import { TSession } from '@shared/types/component';
 import { defaultUserProfile } from '@shared/utils';
 
 const Header = ({ session }: THeaderProps) => {
+    // hooks
     const { Header } = Layout;
     const router = useRouter();
 
