@@ -68,13 +68,13 @@ const WorkExperience: React.FC<TWorkExperienceProps> = ({ data, user }) => {
                     content: false
                 })
             });
-    }, []);
+    }, [isLoading, signal]);
 
     /**
      * handle fetch user details
      * @return void
      */
-    const fetchExperience = async () => {
+    const fetchExperience = useCallback(async () => {
         setIsLoading({
             ...isLoading,
             fullScreen: true
@@ -98,7 +98,7 @@ const WorkExperience: React.FC<TWorkExperienceProps> = ({ data, user }) => {
                 })
             });
 
-    }
+    }, [isLoading, signal]);
 
     /**
      * handle modal actions

@@ -68,7 +68,7 @@ const Candidate: React.FC<TCandidateProps> = ({ data }) => {
                     fullScreen: false
                 })
             });
-    }, [isLoading])
+    }, [isLoading, signal])
 
     /**
      * navigation to profile details view

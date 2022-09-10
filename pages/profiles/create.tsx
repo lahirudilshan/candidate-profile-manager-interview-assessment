@@ -5,6 +5,7 @@ import { TFetchProfileResponse } from '@modules/profiles/types/service';
 import { Candidate } from '@prisma/client';
 import { PageContent, ProfilePicture } from '@shared/components';
 import WithAuth from '@shared/components/HOC/WithAuth';
+import Loader from '@shared/components/Loader';
 import TitleBar from '@shared/components/TitleBar';
 import { useAPIAbort } from '@shared/hooks';
 import { Space, CustomDivider, Flex, } from '@shared/styles';
@@ -36,8 +37,6 @@ const create = ({ session }: TCreateProps) => {
     // effects
     useEffect(() => {
         session && handleFetchUserDetails();
-
-        return () => { }
     }, []);
 
     /**
@@ -66,7 +65,7 @@ const create = ({ session }: TCreateProps) => {
                 })
             });
 
-    }, [isLoading]);
+    }, [isLoading, signal]);
 
     /**
      * handle basic info save 
@@ -76,7 +75,7 @@ const create = ({ session }: TCreateProps) => {
     const handleSubmit = useCallback((data: Partial<Candidate>) => {
         setIsLoading({
             ...isLoading,
-            content: true
+            fullScreen: true
         });
 
         axios.post('/api/auth/update', {
@@ -93,10 +92,10 @@ const create = ({ session }: TCreateProps) => {
             .finally(() => {
                 setIsLoading({
                     ...isLoading,
-                    content: false
+                    fullScreen: false
                 });
             });
-    }, [isLoading]);
+    }, [isLoading, signal]);
 
     /**
      * handle profile privacy
@@ -106,7 +105,7 @@ const create = ({ session }: TCreateProps) => {
     const handleAccountPrivacy = useCallback((value: boolean) => {
         setIsLoading({
             ...isLoading,
-            content: true
+            fullScreen: true
         });
 
         axios.post('/api/auth/update', {
@@ -121,14 +120,15 @@ const create = ({ session }: TCreateProps) => {
             .finally(() => {
                 setIsLoading({
                     ...isLoading,
-                    content: false
+                    fullScreen: false
                 });
             });
 
-    }, [isLoading]);
+    }, [isLoading, signal]);
 
     return (
         <PageContent >
+            {isLoading.fullScreen && <Loader type='fullscreen' opacity={true} />}
             <Row>
                 <Col lg={24}>
                     <TitleBar title="Manage Profile" bottom={2} action={
@@ -167,7 +167,7 @@ const create = ({ session }: TCreateProps) => {
                     </Flex>
                 </Col>
                 <Col lg={18}>
-                    <DynamicWorkExperience user={user} data={user?.workExperiences} />
+                    {user?.workExperiences && <DynamicWorkExperience user={user} data={user?.workExperiences} />}
                 </Col>
             </Row>
         </PageContent>

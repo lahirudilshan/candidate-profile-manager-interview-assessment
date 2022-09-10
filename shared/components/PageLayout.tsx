@@ -15,7 +15,9 @@ const PageLayout: React.FC<TProps> = ({ children }: TProps) => {
   return (
     <Container>
       <Layout>
-        <Header />
+        <div className='header-placeholder'>
+          <Header />
+        </div>
         <Layout>
           <Layout className='main-layout'>
             {!breadcrumbShouldNotInclude.includes(router.asPath) ? <Breadcrumb /> : (<Space top={1.5} />)}
@@ -36,6 +38,10 @@ type TProps = {
 
 // styles
 const Container = styled.div`
+  .header-placeholder {
+    height: 60px;
+    background-color: #001529;
+  }
   .side-bar .context {
     background: #fff;
   }
