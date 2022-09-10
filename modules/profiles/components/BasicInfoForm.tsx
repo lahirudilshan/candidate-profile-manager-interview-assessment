@@ -1,6 +1,6 @@
 import { Candidate } from '@prisma/client';
 import { Form, FormInstance, Input, Select, Typography } from 'antd'
-import React, { SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { CheckOutlined, CloseOutlined, LoadingOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import { TFetchCommonResponse } from '@shared/types/service';
