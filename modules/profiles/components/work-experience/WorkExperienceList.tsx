@@ -51,8 +51,11 @@ const WorkExperienceList = ({ data, mode = 'edit', onAction }: TWorkExperienceLi
 
 // styles
 const WorkExperienceListContainer = styled.div`
-    h4, h5 {
+    h4 {
         line-height: 0.8;
+    }
+    h5 {
+        line-height: 1.5;
     }
     h5 {
         margin-top: 0.8em;
