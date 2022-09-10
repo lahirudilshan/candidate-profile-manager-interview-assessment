@@ -39,7 +39,7 @@ type TProps = {
 // styles
 const Container = styled.div`
   .header-placeholder {
-    height: 60px;
+    height: 64px;
     background-color: #001529;
   }
   .side-bar .context {
