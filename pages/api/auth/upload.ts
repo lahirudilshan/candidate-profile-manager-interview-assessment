@@ -20,25 +20,24 @@ export default async (req: NextApiRequest, res: NextApiResponse<TCommonResponse<
 
         const path = await saveFile({ file });
 
-        let save = undefined;
 
-        if (path) {
-            save = await prisma.candidate.update({
-                where: {
-                    email: session!.user!.email as string
-                },
-                data: {
-                    profilePicture: path
-                }
-            });
+        if (!path) throw Error("Image couldn't upload");
 
-            console.log('Upload', save);
-
-        }
+        const save = await prisma.candidate.update({
+            where: {
+                email: session!.user!.email as string
+            },
+            data: {
+                profilePicture: path
+            }
+        });
 
         return res.status(200).json({
             success: true,
-            data: path,
+            data: {
+                isFileSave: path,
+                isDBUpdate: save
+            },
             message: 'File has been uploaded!'
         });
     } catch (error) {
