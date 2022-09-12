@@ -10,6 +10,7 @@ const Loader = ({
     loaderSize = '50px',
     type = 'content',
     bgColor = undefined,
+    loaderColor = '#fff',
     opacity = false,
 }: TLoaderParams) => {
     return (
@@ -20,6 +21,7 @@ const Loader = ({
             loaderSize={loaderSize}
             type={type}
             bgColor={bgColor}
+            loaderColor={loaderColor}
             opacity={opacity ? true : false}
             className="loader">
             <Flex justifyContent={'center'} alignItems={'center'} className="loading-container">
@@ -37,6 +39,7 @@ type TLoaderParams = {
     loaderSize?: string;
     bgColor?: string;
     opacity?: boolean;
+    loaderColor?: string;
     type?: 'content' | 'fullscreen' | 'fit_to_content';
 };
 
@@ -48,11 +51,13 @@ const LoaderContainer = styled.div<{
     loaderSize?: string;
     bgColor?: string;
     opacity?: boolean;
+    loaderColor?: string;
     type?: 'content' | 'fullscreen' | 'fit_to_content';
 }>`
     width: ${(props) => props.width || '100%'};
     .loading-container,
     &.ant-modal-content {
+        color: ${(props) => props.loaderColor};
         z-index: 1001 !important;
         width: ${(props) => props.width || '100%'};
         height: ${(props) => props.height};

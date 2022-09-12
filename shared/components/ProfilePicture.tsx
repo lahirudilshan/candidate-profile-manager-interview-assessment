@@ -4,10 +4,12 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import FileUploader from '@shared/components/FileUploader';
 import { defaultUserProfile } from '@shared/utils';
+import Loader from './Loader';
 
 const ProfilePicture = ({ src }: TProfilePictureProps) => {
     // states
     const [profileURL, setProfileURL] = useState(src);
+    const [isLoading, setIsLoading] = useState(false);
 
     // effects
     useEffect(() => {
@@ -19,15 +21,23 @@ const ProfilePicture = ({ src }: TProfilePictureProps) => {
      * @param url 
      * @returns void
      */
-    const handlePreviewURL = (url: string) => setProfileURL(url);
+    const handlePreviewURL = (url: string) => {
+        setProfileURL(url);
+        setIsLoading(true);
+    }
+
+    const handleProcessFinish = () => {
+        setIsLoading(false);
+    }
 
     return (
         <ProfileContainer>
             <Position type='relative'>
                 <Bordered radius={'8px'}>
                     <Image src={profileURL || defaultUserProfile} preview={profileURL ? true : false} alt="candidate image" />
+                    {isLoading && <Loader type='fit_to_content' opacity loaderColor='#fff' />}
                 </Bordered>
-                <FileUploader onRemove={() => { }} onPreviewURlChange={handlePreviewURL} />
+                <FileUploader onRemove={() => { }} onPreviewURlChange={handlePreviewURL} handleProcessFinish={handleProcessFinish} />
             </Position>
         </ProfileContainer>
     )

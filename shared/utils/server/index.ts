@@ -1,8 +1,8 @@
 import { getSession } from 'next-auth/react';
-import path from "path";
-import { promises as fs } from "fs";
+import fs from "fs";
 import formidable, { File } from "formidable";
 import { NextApiRequest } from "next";
+import { getDriverService } from '@pages/api/auth/google-auth';
 
 /***************************
  * get file from request
@@ -36,38 +36,47 @@ export const getFileFromRequest = async ({ req }: TGetFileFromRequestParams) => 
 /***************************
  * File save functions
  ***************************/
-type TSaveFileParams = {
-    uploadPath?: string;
-    file: File
-}
-
 /**
  * save file on server
  * @param { uploadPath: string, file: File }
  * @return boolean
  */
-export const saveFile = async ({ uploadPath = `/static/images/profile-pictures/`, file }: TSaveFileParams) => {
-    try {
-        const targetPath = path.join(process.cwd(), '/public' + uploadPath);
+export const saveFile = async (file: File) => {
+    const fileMetadata = {
+        name: file.newFilename,
+        parents: ["1LLiSeSmrxplVHYMJ6M243OTVElIAsZZ6"], // parents: mean upload folder ID of google drive
+    };
 
-        try {
-            await fs.access(targetPath);
-        } catch (e) {
-            await fs.mkdir(targetPath);
-        }
+    const service = getDriverService();
 
-        if (!file) throw Error('File not found');
+    // create file on drive
+    const createResponse = await service.files.create({
+        requestBody: fileMetadata,
+        media: {
+            mimeType: file.mimetype as string,
+            body: fs.createReadStream(file.filepath),
+        },
+        fields: "id",
+    });
 
-        const tempPath = file.filepath;
-        const fileName = Date.now() + '_' + file.originalFilename;
-        const savePath = targetPath + fileName;
-        const publicPath = process.env.NEXTAUTH_URL + uploadPath + fileName;
-        await fs.rename(tempPath, savePath);
+    if (createResponse.data.id) {
+        // make permission for file view
+        await service.permissions.create({
+            fileId: createResponse.data.id,
+            requestBody: {
+                role: 'reader',
+                type: 'anyone'
+            }
+        });
 
-        return publicPath;
-    } catch (error) {
-        return false;
+        // get file viewable urls
+        return await service.files.get({
+            fileId: createResponse.data.id,
+            fields: "webViewLink, webContentLink",
+        });
     }
+
+    throw Error(`something went wrong!, file couldn't upload`);
 }
 
 /**

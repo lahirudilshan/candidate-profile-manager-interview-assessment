@@ -4,6 +4,9 @@ import { FormInstance } from "antd";
 import { RcFile } from "antd/lib/upload";
 import moment from "moment";
 import { TYearsOfExperienceParams } from '@shared/types/utils';
+import { google } from 'googleapis';
+import { drive } from 'googleapis/build/src/apis/drive';
+import { getDriverService, getGoogleAuth } from '@pages/api/auth/google-auth';
 
 // variables
 export const defaultUserProfile = '/static/images/default-user.jpeg';

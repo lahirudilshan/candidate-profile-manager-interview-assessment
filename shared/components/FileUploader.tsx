@@ -10,7 +10,8 @@ import { message } from 'antd';
 const FileUploader = ({
     icon = <CameraOutlined />,
     onPreviewURlChange,
-    onRemove
+    onRemove,
+    handleProcessFinish
 }: TFileUploaderProps) => {
     /**
      * upload file
@@ -28,6 +29,8 @@ const FileUploader = ({
                 file: formData
             })
                 .then(response => {
+                    if (!response.data.success) throw Error('Something went wrong!');
+
                     message.success('Profile picture has been uploaded!', 10)
 
                     resolve({
@@ -56,9 +59,11 @@ const FileUploader = ({
             const url = await getBase64(file as RcFile);
 
             onPreviewURlChange(url);
-            handleUploadFile(file);
+            await handleUploadFile(file);
         } catch (error) {
             console.log(error);
+        } finally {
+            handleProcessFinish();
         }
 
         return false;
@@ -83,6 +88,7 @@ type TFileUploaderProps = {
     icon?: React.ReactNode;
     onPreviewURlChange: (URL: string) => void
     onRemove: ((file: UploadFile<any>) => boolean | void | Promise<boolean | void>) | undefined
+    handleProcessFinish: () => void
 };
 
 // styles

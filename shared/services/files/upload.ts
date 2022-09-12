@@ -6,25 +6,16 @@ import axios from 'axios';
  * @returns Promise<string | TUploadFileResponse>
  */
 const uploadFile = async ({ file }: TUploadFile) => {
-    try {
-        const { data, status } = await axios.post<TUploadFileResponse>(
-            '/api/auth/upload',
-            file
-        );
-
-        return data;
-    } catch (error) {
-        if (axios.isAxiosError(error)) {
-            return error.message;
-        } else {
-            return 'An unexpected error occurred';
-        }
-    }
+    return await axios.post<TUploadFileResponse>(
+        '/api/auth/upload',
+        file
+    );
 }
 
 // types
 export type TUploadFileResponse = {
     data: any;
+    success: boolean;
 };
 
 export type TUploadFile = {
