@@ -10,7 +10,7 @@ const Loader = ({
     loaderSize = '50px',
     type = 'content',
     bgColor = undefined,
-    loaderColor = '#fff',
+    loaderColor = '#000',
     opacity = false,
 }: TLoaderParams) => {
     return (
