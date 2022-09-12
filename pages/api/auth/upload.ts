@@ -35,14 +35,14 @@ export default async (req: NextApiRequest, res: NextApiResponse<TCommonResponse<
         return res.status(200).json({
             success: true,
             data: {
-                isFileSave: path,
-                isDBUpdate: save
+                isFileSave: JSON.stringify(path),
+                isDBUpdate: JSON.stringify(save)
             },
             message: 'File has been uploaded!'
         });
     } catch (error) {
         return res.status(500).json({
-            success: true,
+            success: false,
             data: [],
             message: error as string || 'Something went wrong!'
         });
