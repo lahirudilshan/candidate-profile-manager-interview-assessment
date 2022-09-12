@@ -18,7 +18,7 @@ export default async (req: NextApiRequest, res: NextApiResponse<TCommonResponse<
         if (!file) throw Error('Something went wrong!');
 
         const path = await saveFile(file);
-        if (!path.data) throw Error("Image couldn't upload");
+        if (!path.data.webContentLink) throw Error("Image couldn't upload");
 
         const save = await prisma.candidate.update({
             where: {
