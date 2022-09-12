@@ -7,11 +7,11 @@ import { google } from "googleapis";
 export const getGoogleAuth = () => {
     const auth = new google.auth.GoogleAuth({
         credentials: {
-            private_key: process.env.PRIVATE_KEY,
-            client_email: process.env.CLIENT_EMAIL,
+            private_key: process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY,
+            client_email: process.env.GOOGLE_SERVICE_ACCOUNT_CLIENT_EMAIL,
         },
         projectId: process.env.PROJECT_ID,
-        scopes: process.env.DRIVE_SCOPES,
+        scopes: process.env.GOOGLE_SERVICE_ACCOUNT_SCOPE,
     });
     return auth;
 };
