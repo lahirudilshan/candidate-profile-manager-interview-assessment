@@ -37,3 +37,5 @@ yarn-error.log*
 next-env.d.ts
 
 # other
+cypress/videos
+cypress/screenshots

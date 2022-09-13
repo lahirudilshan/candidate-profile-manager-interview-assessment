@@ -110,7 +110,7 @@ const Candidate: React.FC<TCandidateProps> = ({ data }) => {
                         >
                             {(candidate: TCandidate) => (
                                 <Cursor>
-                                    <List.Item key={candidate.name} onClick={() => handleProfileView(candidate)}>
+                                    <List.Item data-cy="candidate-profile" key={candidate.name} onClick={() => handleProfileView(candidate)}>
                                         <List.Item.Meta
                                             avatar={<Avatar src={candidate.profilePicture || '/static/images/default-user.jpeg'} />}
                                             title={

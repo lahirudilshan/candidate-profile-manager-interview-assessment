@@ -58,7 +58,7 @@ const ProfileView = ({ candidate }: TProfileViewProps) => {
                     </Flex>
                   </Col>
                   <Col lg={14}>
-                    <Typography.Title level={1}>{candidate.name}</Typography.Title>
+                    <Typography.Title level={1} data-cy="candidate-name">{candidate.name}</Typography.Title>
                     <Typography.Title level={4} type="secondary"> {getLatestExperience(candidate)?.jobTitle || 'Unknown Job Title'}</Typography.Title>
                     <Space top={3} />
                     {candidate && candidate.workExperiences && candidate.workExperiences.length > 0 && (
