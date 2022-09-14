@@ -93,6 +93,9 @@ const Container = styled.div`
         border: 1px solid #4c4c4c;
         border-radius: 100%;
     }
+    .ant-menu-item {
+        cursor: pointer;
+    }
 `;
 
 // types
