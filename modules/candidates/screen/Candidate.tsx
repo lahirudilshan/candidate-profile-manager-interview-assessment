@@ -86,7 +86,7 @@ const Candidate: React.FC<TCandidateProps> = ({ data }) => {
     const yearsOfExperience = useCallback((candidate: TCandidate) => {
         return getTotalYearsOfExperienceWithText({
             startDate: candidate.workExperiences[0].startDate,
-            endDate: getLatestExperience(candidate)?.startDate
+            endDate: getLatestExperience(candidate)?.endDate
         });
     }, []);
 
