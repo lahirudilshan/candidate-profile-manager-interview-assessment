@@ -28,7 +28,7 @@ const Header = ({ session }: THeaderProps) => {
             {
                 key: 'settings',
                 label: (
-                    <Flex justifyContent={'center'} alignItems={'center'}>
+                    <Flex justifyContent={'center'} alignItems={'center'} data-cy="profile">
                         <Avatar src={session?.user?.image || defaultUserProfile} icon={<UserOutlined />} />
                         <Space left={1} />
                         {session?.user?.name}

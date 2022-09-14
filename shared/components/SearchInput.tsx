@@ -14,6 +14,7 @@ const SearchInput = ({ defaultValue = '', width = '260px', size = "middle", plac
                 style={{ width: width }}
                 allowClear={true}
                 size={size}
+                data-cy="search"
                 onChange={(event) => onChange(removeSpaces(event.target.value))}
             />
         </SearchContainer>

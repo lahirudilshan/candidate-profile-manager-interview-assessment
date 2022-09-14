@@ -143,6 +143,7 @@ const Candidate: React.FC<TCandidateProps> = ({ data }) => {
                     </List>
                     : (
                         <Result
+                            data-cy="no-candidate"
                             title="No candidates found"
                         />
                     )}

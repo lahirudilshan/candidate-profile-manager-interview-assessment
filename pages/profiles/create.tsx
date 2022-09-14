@@ -131,7 +131,7 @@ const create = ({ session }: TCreateProps) => {
             {isLoading.fullScreen && <Loader type='fullscreen' opacity={true} />}
             <Row>
                 <Col lg={24}>
-                    <TitleBar title="Manage Profile" bottom={2} action={
+                    <TitleBar data-cy="title" title="Manage Profile" bottom={2} action={
                         <Flex alignItems={'center'}>
                             <Flex alignItems={'center'}>
                                 <Space right={1}>
