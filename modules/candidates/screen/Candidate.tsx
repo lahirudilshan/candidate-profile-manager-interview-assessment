@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 import { TLoader } from '@shared/types/component';
 import axios from 'axios';
 import { TCandidate } from '@modules/profiles/types/entity';
-import { getLatestExperience, getTotalYearsOfExperienceWithText, removeSpaces } from '@shared/utils';
+import { getLatestExperience, getTotalYearsOfExperienceWithText, cleanSearchTerm } from '@shared/utils';
 import SearchInput from '@shared/components/SearchInput';
 import Loader from '@shared/components/Loader';
 import { useAPIAbort } from '@shared/hooks';
@@ -43,7 +43,7 @@ const Candidate: React.FC<TCandidateProps> = ({ data }) => {
 
         searchDebounceRef.current && clearTimeout(searchDebounceRef.current);
         searchDebounceRef.current = setTimeout(() => {
-            fetchCandidates({ q: removeSpaces((searchRef.current as string)) || null });
+            fetchCandidates({ q: cleanSearchTerm((searchRef.current as string)) || null });
         }, 500);
     }
 

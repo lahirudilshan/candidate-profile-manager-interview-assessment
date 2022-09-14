@@ -95,12 +95,12 @@ export const stringToSlug = (text: string) => {
 }
 
 /**
- * remove spaces from text
+ * remove spaces, text lowercase, trim
  * @param value: text
  * @returns string: trim text
  */
-export const removeSpaces = (value: string) => {
-    return value.replace(/^\s+|\s+$/gm, '');
+export const cleanSearchTerm = (value: string) => {
+    return value.replace(/^\s+|\s+$/gm, '').toLocaleLowerCase().trim();
 };
 
 /**

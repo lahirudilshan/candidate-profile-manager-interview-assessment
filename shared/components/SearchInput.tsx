@@ -2,7 +2,7 @@ import { SearchOutlined } from '@ant-design/icons';
 import { Input } from 'antd';
 import React from 'react';
 import styled from 'styled-components';
-import { removeSpaces } from '@shared/utils';
+import { cleanSearchTerm } from '@shared/utils';
 
 const SearchInput = ({ defaultValue = '', width = '260px', size = "middle", placeholder = 'Search...', onChange }: TSearchInputProps) => {
     return (
@@ -15,7 +15,7 @@ const SearchInput = ({ defaultValue = '', width = '260px', size = "middle", plac
                 allowClear={true}
                 size={size}
                 data-cy="search"
-                onChange={(event) => onChange(removeSpaces(event.target.value))}
+                onChange={(event) => onChange(cleanSearchTerm(event.target.value))}
             />
         </SearchContainer>
     );
