@@ -5,6 +5,7 @@ import { TFetchProfileResponse } from '@modules/profiles/types/service';
 import { Candidate } from '@prisma/client';
 import { PageContent, ProfilePicture } from '@shared/components';
 import WithAuth from '@shared/components/HOC/WithAuth';
+import { WithSSRAuthorizeCheck } from '@shared/components/HOC/WithSSRAuthorizeCheck';
 import Loader from '@shared/components/Loader';
 import TitleBar from '@shared/components/TitleBar';
 import { useAPIAbort } from '@shared/hooks';
@@ -12,12 +13,19 @@ import { Space, CustomDivider, Flex, } from '@shared/styles';
 import { TLoader, TSession } from '@shared/types/component';
 import { Button, Col, Form, message, Row, Switch } from 'antd';
 import axios from 'axios';
+import { GetServerSideProps } from 'next';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useState } from 'react';
 
 const DynamicWorkExperience = dynamic(() => import('@modules/profiles/screen/WorkExperience'), {
     ssr: false,
+});
+
+export const getServerSideProps: GetServerSideProps = WithSSRAuthorizeCheck(async (context) => {
+    return {
+        props: {},
+    }
 });
 
 const create = ({ session }: TCreateProps) => {

@@ -1,7 +1,6 @@
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import React, { ComponentType } from 'react'
-import Loader from '../Loader';
 
 function WithAuth<T>(Component: ComponentType<T>) {
     return (HOCProps: any) => {
