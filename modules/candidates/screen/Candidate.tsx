@@ -105,7 +105,7 @@ const Candidate: React.FC<TCandidateProps> = ({ data }) => {
                             key={'list'}
                             data={candidates}
                             itemHeight={47}
-                            itemKey="candidates"
+                            itemKey="name"
                             onScroll={() => { }}
                         >
                             {(candidate: TCandidate) => (

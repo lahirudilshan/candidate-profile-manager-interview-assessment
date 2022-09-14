@@ -19,21 +19,10 @@ export default async (
         if (searchTerm !== null) {
             whereFilters = {
                 ...whereFilters,
-                isPublic: true,
-                AND: {
-                    OR: [
-                        {
-                            email: {
-                                contains: searchTerm
-                            },
-                        },
-                        {
-                            name: {
-                                contains: searchTerm
-                            },
-                        }
-                    ]
-                }
+                name: {
+                    contains: searchTerm,
+                    mode: 'insensitive',
+                },
             }
         }
 
