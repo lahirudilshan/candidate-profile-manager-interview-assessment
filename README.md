@@ -2,9 +2,7 @@
 
 This is a React (NextJs) based Interview Assessment for cover FE dev skills with software development best practices.
 
-<img src="https://raw.githubusercontent.com/lahirudilshan/candidate-profile-manager-interview-assessment/master/public/static/images/logo.png" width="150">
-<br/>
-<br/>
+<img src="https://raw.githubusercontent.com/lahirudilshan/candidate-profile-manager-interview-assessment/master/public/static/images/logo.png" width="180">
 
 ## Application Features
 
@@ -28,6 +26,8 @@ This is a React (NextJs) based Interview Assessment for cover FE dev skills with
 | `prisma`                      | used as database manage ORM with Postgress SQL | https://www.prisma.io/              |
 | `googleapis`                  | used google drive API for upload image         | https://developers.google.com/drive |
 | `cypress`                     | used for testing                               | https://www.cypress.io/             |
+| `vercel`                      | used as Hosting server (free)                  | https://vercel.com/                 |
+| `heroku`                      | used as Database server (free)                 | https://heroku.com/                 |
 
 ## Application Reference
 
@@ -104,3 +104,24 @@ User Profile Experience edit
 <img src="https://github.com/lahirudilshan/candidate-profile-manager-interview-assessment/blob/master/public/screenshots/experience-edit.png">
 <br/>
 <br/>
+
+## Support
+
+This application use **heroku, vercel, googleapis** as free service and time to need to update keys, etc...if you face any difficulty to view the application please reach me with below medias
+<br/>
+
+## 🔗 Links
+
+[![portfolio](https://img.shields.io/badge/my_portfolio-000?style=for-the-badge&logo=ko-fi&logoColor=white)](https://lahirudilshan.github.io/)
+
+[![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://lk.linkedin.com/in/lahiru-dilshan-408ab3108)
+
+[![twitter](https://img.shields.io/badge/gmail-c0392b?style=for-the-badge&logo=gmail&logoColor=white)](mailto:lahiru4unew4@gmail.com)
+
+<br/>
+
+## 🚀 About Me
+
+Senior JavaScript Fullstack Engineer with 6+ years of experience , Focused on Frontend, Skilled in **React, NextJs**, Angular, Node.js, and Pixel perfect UI design
+
+**From In Sri Lanka**
