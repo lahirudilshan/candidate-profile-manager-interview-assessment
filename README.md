@@ -6,6 +6,18 @@ This is a React (NextJs) based Interview Assessment for cover FE dev skills with
 <br/>
 <br/>
 
+## Application Features
+
+- User login with google account + logout
+- Manage Profile image upload
+- Manage User detail and work Experience
+- Custom sharable profile Link: e.g: top100.com/profile/lahiru
+- candidates search
+- candidates's profile view
+- profile privacy (public or private)
+  <br/>
+  <br/>
+
 ## Used technologies
 
 | Name                          | Description                                    | Link                                |
@@ -59,3 +71,36 @@ Application live in
 ```bash
   http://localhost:3000/
 ```
+
+## Application Screenshots
+
+Candidates list view
+<br/>
+<br/>
+<img src="https://github.com/lahirudilshan/candidate-profile-manager-interview-assessment/blob/master/public/screenshots/list.png">
+<br/>
+<br/>
+Candidate Detail view
+<br/>
+<br/>
+<img src="https://github.com/lahirudilshan/candidate-profile-manager-interview-assessment/blob/master/public/screenshots/detail-view.png">
+<br/>
+<br/>
+User Profile Edit
+<br/>
+<br/>
+<img src="https://github.com/lahirudilshan/candidate-profile-manager-interview-assessment/blob/master/public/screenshots/profile-edit.png">
+<br/>
+<br/>
+User Profile Experience add
+<br/>
+<br/>
+<img src="https://github.com/lahirudilshan/candidate-profile-manager-interview-assessment/blob/master/public/screenshots/experience-add.png">
+<br/>
+<br/>
+User Profile Experience edit
+<br/>
+<br/>
+<img src="https://github.com/lahirudilshan/candidate-profile-manager-interview-assessment/blob/master/public/screenshots/experience-edit.png">
+<br/>
+<br/>
