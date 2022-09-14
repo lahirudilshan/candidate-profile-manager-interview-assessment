@@ -40,7 +40,7 @@ const ProfileView = ({ candidate }: TProfileViewProps) => {
   const yearsOfExperience = useCallback((candidate: TCandidate) => {
     return getTotalYearsOfExperienceWithText({
       startDate: candidate.workExperiences[0].startDate,
-      endDate: getLatestExperience(candidate)?.startDate
+      endDate: getLatestExperience(candidate)?.endDate
     });
   }, []);
 
