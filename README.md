@@ -2,7 +2,7 @@
 
 This is a React (NextJs) based Interview Assessment for cover FE dev skills with software development best practices.
 
-<img src="https://raw.githubusercontent.com/lahirudilshan/candidate-profile-manager-interview-assessment/master/public/static/images/logo.png" width="180">
+<img src="https://github.com/lahirudilshan/candidate-profile-manager-interview-assessment/blob/master/public/logo.png" width="180">
 
 ## Application Features
 
