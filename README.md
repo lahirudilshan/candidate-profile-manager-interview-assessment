@@ -16,27 +16,31 @@ This is a React (NextJs) based Interview Assessment for cover FE dev skills with
   <br/>
   <br/>
 
+## Demo
+
+[![Demo video](https://img.youtube.com/vi/5mtHDvlw3is/0.jpg)](https://www.youtube.com/watch?v=5mtHDvlw3is)
+
 ## Used technologies
 
-| Name                          | Description                                    | Link                                |
-| :---------------------------- | :--------------------------------------------- | :---------------------------------- |
-| `NextJs (React) + Typescript` | used NextJs for Both Backend and Frontend      | https://nextjs.org/                 |
-| `Ant Design`                  | Ant Design use for UI design                   | https://ant.design/                 |
-| `Styled component`            | used for custom style with dynamic variable    | https://styled-components.com/      |
-| `prisma`                      | used as database manage ORM with Postgress SQL | https://www.prisma.io/              |
-| `googleapis`                  | used google drive API for upload image         | https://developers.google.com/drive |
-| `cypress`                     | used for testing                               | https://www.cypress.io/             |
-| `vercel`                      | used as Hosting server (free)                  | https://vercel.com/                 |
-| `heroku`                      | used as Database server (free)                 | https://heroku.com/                 |
+| Name                          | Description                                 | Link                                |
+| :---------------------------- | :------------------------------------------ | :---------------------------------- |
+| `NextJs (React) + Typescript` | used NextJs for Both Backend and Frontend   | https://nextjs.org/                 |
+| `Ant Design`                  | Ant Design use for UI design                | https://ant.design/                 |
+| `Styled component`            | used for custom style with dynamic variable | https://styled-components.com/      |
+| `prisma`                      | used as database manage ORM with Postgresql | https://www.prisma.io/              |
+| `googleapis`                  | used google drive API for upload image      | https://developers.google.com/drive |
+| `cypress`                     | used for testing                            | https://www.cypress.io/             |
+| `vercel`                      | used as Hosting server (free)               | https://vercel.com/                 |
+| `heroku`                      | used as Database server (free)              | https://heroku.com/                 |
 
 ## Application Reference
 
-You can also register and check application \
-This is hosted Link: https://top100-candidates.vercel.app/
+You can also register, login and check how application work \
+Visit: https://top100-candidates.vercel.app/
 
 ## Installation
 
-Preinstall tools
+Preinstalled tools
 
 - yarn / npm
 - git
