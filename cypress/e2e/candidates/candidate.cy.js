@@ -6,7 +6,7 @@ describe('candidate test case', () => {
     })
 
     it('check at least have once candidate', () => {
-        cy.get('.rc-virtual-list-holder-inner').find('[data-cy="candidate-profile"]').should('have.length.at.least', 1);
+        cy.get('[data-cy="candidate-profile"]').should('have.length.at.least', 1);
     })
 
     it('search candidate failed scenario', () => {
@@ -16,7 +16,7 @@ describe('candidate test case', () => {
 
     it('search candidate success scenario', () => {
         cy.get('[data-cy="search"]').type('lahiru')
-        cy.get('.rc-virtual-list-holder-inner').find('[data-cy="candidate-profile"]').should('have.length.at.least', 1);
+        cy.get('[data-cy="candidate-profile"]').should('have.length.at.least', 1);
     })
 
     it('view candidate profile', () => {
