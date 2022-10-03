@@ -33,7 +33,7 @@ const ProfilePicture = ({ src }: TProfilePictureProps) => {
     return (
         <ProfileContainer>
             <Position type='relative'>
-                <Bordered radius={'8px'}>
+                <Bordered radius={'8px'} style={style.profileHeight}>
                     <Image src={profileURL || defaultUserProfile} preview={profileURL ? true : false} alt="candidate image" />
                     {isLoading && <Loader type='fit_to_content' opacity loaderColor='#fff' />}
                 </Bordered>
@@ -46,12 +46,18 @@ const ProfilePicture = ({ src }: TProfilePictureProps) => {
 // styles
 const ProfileContainer = styled.div`
     img {
-        width: 254px;
-        height: 254px;
+        width: 100%;
         object-fit: cover;
         border-radius: 8px;
     }
 `;
+
+const style = {
+    profileHeight: {
+        height: '280px',
+        overflow: 'hidden'
+    }
+}
 
 // types
 type TProfilePictureProps = {

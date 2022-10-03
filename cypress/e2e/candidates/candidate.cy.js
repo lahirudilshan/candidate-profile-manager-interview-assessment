@@ -20,7 +20,9 @@ describe('candidate test case', () => {
     })
 
     it('view candidate profile', () => {
+        cy.get('[data-cy="search"]').type('lahiru')
         cy.get('[data-cy="candidate-profile"]').click();
-        cy.get('[data-cy="candidate-name"]').contains('lahiru');
+        cy.wait(10000);
+        cy.get('[data-cy="candidate-name"]').contains('Lahiru Dilshan');
     })
 })
